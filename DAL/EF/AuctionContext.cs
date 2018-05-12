@@ -1,4 +1,6 @@
 ﻿using DAL.Entities;
+using DAL.Identity.Entities;
+using Microsoft.AspNet.Identity.EntityFramework;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -8,10 +10,9 @@ using System.Threading.Tasks;
 
 namespace DAL.EF
 {
-    public class AuctionContext : DbContext
+    public class AuctionContext : IdentityDbContext<ApplicationUser>
     {
         public DbSet<User> Users { get; set; }
-        public DbSet<Lot> Lots { get; set; }
 
         static AuctionContext()
         {

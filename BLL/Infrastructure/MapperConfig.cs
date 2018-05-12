@@ -15,7 +15,6 @@ namespace BLL.Infrastructure
         {
             Mapper.Initialize(cfg =>
             {
-                cfg.CreateMap<Lot, LotDTO>();
                 cfg.CreateMap<User, UserDTO>();
             });
         }
