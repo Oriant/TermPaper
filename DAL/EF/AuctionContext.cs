@@ -13,6 +13,11 @@ namespace DAL.EF
         public DbSet<User> Users { get; set; }
         public DbSet<Lot> Lots { get; set; }
 
+        static AuctionContext()
+        {
+            Database.SetInitializer(new AuctionDbInitializer());
+        }
+
         public AuctionContext(string connectionString) : base(connectionString) { }
     }
 }

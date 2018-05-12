@@ -1,6 +1,7 @@
 ﻿using BLL.DTO;
 using BLL.Infrastructure;
 using BLL.Interfaces;
+using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using System;
@@ -74,9 +75,11 @@ namespace TermPaper.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterModel model)
         {
+            UserManager userManager = new UserManager<UserDTO>();
             if (ModelState.IsValid)
             {
                 UserDTO userDto = new UserDTO
@@ -86,9 +89,14 @@ namespace TermPaper.Controllers
                     Name = model.Name,
                     Role = "user"
                 };
+
                 OperationDetails operationDetails = await UserService.Create(userDto);
+
                 if (operationDetails.Succedeed)
+                {
+                    await UserManager.
                     return View("SuccessRegister");
+                }
                 else
                     ModelState.AddModelError(operationDetails.Property, operationDetails.Message);
             }
