@@ -1,4 +1,6 @@
-﻿using DAL.Identity.Interfaces;
+﻿using BLL.Interfaces;
+using BLL.Services;
+using DAL.Identity.Interfaces;
 using DAL.Identity.Repositories;
 using Ninject.Modules;
 using System;
@@ -21,6 +23,7 @@ namespace BLL.Infrastructure
         public override void Load()
         {
             Bind<IUnitOfWorkIdentity>().To<IdentityUnitOfWork>().WithConstructorArgument(connectionString);
+            Bind<IUserService>().To<UserService>();
         }
     }
 }

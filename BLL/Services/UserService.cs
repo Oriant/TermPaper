@@ -21,9 +21,9 @@ namespace BLL.Services
         IUnitOfWorkIdentity Database { get; set; }
         IUnitOfWork Data { get; set; }
 
-        public UserService(IUnitOfWorkIdentity uowi, IUnitOfWork uow)
+        public UserService(IUnitOfWorkIdentity uowIdentity, IUnitOfWork uow)
         {
-            Database = uowi;
+            Database = uowIdentity;
             Data = uow;
         }
 
@@ -57,6 +57,7 @@ namespace BLL.Services
 
             if (user != null)
                 claim = await Database.UserManager.CreateIdentityAsync(user, DefaultAuthenticationTypes.ApplicationCookie);
+
             return claim;
         }
 

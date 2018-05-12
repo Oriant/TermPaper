@@ -15,9 +15,9 @@ namespace DAL.Identity.Repositories
         private AuctionContext db;
         private bool disposed = false;
 
-        public ApplicationUserManager UserManager { get; protected set; }
-        public ApplicationRoleManager RoleManager { get; protected set; }
-        public IClientManager ClientManager { get; protected set; }
+        public ApplicationUserManager UserManager { get; private set; }
+        public ApplicationRoleManager RoleManager { get; private set; }
+        public IClientManager ClientManager { get; private set; }
 
 
         public IdentityUnitOfWork(string connectionString)
