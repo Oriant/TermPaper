@@ -21,9 +21,9 @@ namespace BLL.Services
         IUnitOfWorkIdentity Database { get; set; }
         IUnitOfWork Data { get; set; }
 
-        public UserService(IUnitOfWorkIdentity uowIdentity, IUnitOfWork uow)
+        public UserService(IUnitOfWorkIdentity uowi, IUnitOfWork uow)
         {
-            Database = uowIdentity;
+            Database = uowi;
             Data = uow;
         }
 
@@ -42,7 +42,7 @@ namespace BLL.Services
                 User clientProfile = new User { Id = user.Id, Name = userDto.Name };
                 Database.ClientManager.Create(clientProfile);
                 await Database.SaveAsync();
-                return new OperationDetails(true, "Registration is successfully completed", "");
+                return new OperationDetails(true, "Registration has been successful", "");
             }
             else
             {
@@ -57,19 +57,18 @@ namespace BLL.Services
 
             if (user != null)
                 claim = await Database.UserManager.CreateIdentityAsync(user, DefaultAuthenticationTypes.ApplicationCookie);
-
             return claim;
         }
 
         public UserDTO GetUserById(string id)
         {
             var user = Data.Users.Get(id);
-            return AutoMapper.Mapper.Map<User, UserDTO>(user);
+            return Mapper.Map<User, UserDTO>(user);
         }
 
         public IEnumerable<UserDTO> GetUsers()
         {
-            return AutoMapper.Mapper.Map<IEnumerable<User>, IEnumerable<UserDTO>>(Data.Users.GetAll());
+            return Mapper.Map<IEnumerable<User>, IEnumerable<UserDTO>>(Data.Users.GetAll());
         }
 
         public void Dispose()

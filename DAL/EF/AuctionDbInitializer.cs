@@ -32,7 +32,7 @@ namespace DAL.EF
             string adminPassword = "Admin_1234";
             userManager.Create(admin, adminPassword);
 
-            var manager = new ApplicationUser { Email = "mngr@gmail.com", UserName = "manager@gmail.com" };
+            var manager = new ApplicationUser { Email = "manager@gmail.com", UserName = "manager@gmail.com" };
             string managerPassword = "Manager_1234";
             userManager.Create(manager, managerPassword);
 

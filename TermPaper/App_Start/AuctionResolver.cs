@@ -19,7 +19,8 @@ namespace TermPaper.App_Start
             NinjectModule serviceMoudle = new ServiceModule();
             NinjectModule bindingModule = new BindingModule("DefaultConnection");
 
-            var kernel = new StandardKernel();
+            var kernel = new StandardKernel(serviceMoudle, bindingModule);
+            kernel.Unbind<ModelValidatorProvider>();
             DependencyResolver.SetResolver(new NinjectDependencyResolver(kernel));
         }
     }

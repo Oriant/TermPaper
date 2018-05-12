@@ -9,7 +9,6 @@ namespace DAL.Interfaces
 {
     public interface IUnitOfWork : IDisposable
     {
-        IRepository<Lot> Lots { get; }
         IUserRepository Users { get; }
         void Save();
     }

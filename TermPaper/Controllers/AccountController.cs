@@ -17,21 +17,14 @@ namespace TermPaper.Controllers
 {
     public class AccountController : Controller
     {
-        private IUserService UserService
-        {
-            get
-            {
-                return HttpContext.GetOwinContext().GetUserManager<IUserService>();
-            }
-        }
+        readonly IUserService userService;
 
         private IAuthenticationManager AuthenticationManager
         {
-            get
-            {
-                return HttpContext.GetOwinContext().Authentication;
-            }
+            get => HttpContext.GetOwinContext().Authentication;
         }
+
+        public AccountController(IUserService userService) => this.userService = userService;
 
         public ActionResult Login()
         {
@@ -45,10 +38,10 @@ namespace TermPaper.Controllers
             if (ModelState.IsValid)
             {
                 UserDTO userDto = new UserDTO { Email = model.Email, Password = model.Password };
-                ClaimsIdentity claim = await UserService.Authentificate(userDto);
+                ClaimsIdentity claim = await userService.Authentificate(userDto);
                 if (claim == null)
                 {
-                    ModelState.AddModelError("", "Invalid login/password.");
+                    ModelState.AddModelError("", "Неверный логин или пароль.");
                 }
                 else
                 {
@@ -75,11 +68,9 @@ namespace TermPaper.Controllers
         }
 
         [HttpPost]
-        [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterModel model)
         {
-            UserManager userManager = new UserManager<UserDTO>();
             if (ModelState.IsValid)
             {
                 UserDTO userDto = new UserDTO
@@ -90,13 +81,10 @@ namespace TermPaper.Controllers
                     Role = "user"
                 };
 
-                OperationDetails operationDetails = await UserService.Create(userDto);
+                OperationDetails operationDetails = await userService.Create(userDto);
 
                 if (operationDetails.Succedeed)
-                {
-                    await UserManager.
-                    return View("SuccessRegister");
-                }
+                    return View("~/Views/Account/SuccessfulRegister");
                 else
                     ModelState.AddModelError(operationDetails.Property, operationDetails.Message);
             }
