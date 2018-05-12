@@ -53,11 +53,26 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EF\AuctionContext.cs" />
+    <Compile Include="Entities\Lot.cs" />
+    <Compile Include="Entities\User.cs" />
+    <Compile Include="Identity\Entities\ApplicationRole.cs" />
+    <Compile Include="Identity\Entities\ApplicationUser.cs" />
+    <Compile Include="Identity\Interfaces\IClientManager.cs" />
+    <Compile Include="Identity\Interfaces\IUnitOfWorkIdentity.cs" />
+    <Compile Include="Identity\Repositories\ApplicationRoleManager.cs" />
+    <Compile Include="Identity\Repositories\ApplicationUserManager.cs" />
+    <Compile Include="Identity\Repositories\ClientManager.cs" />
+    <Compile Include="Identity\Repositories\IdentityUnitOfWork.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Interfaces\" />
+    <Folder Include="Repositories\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
