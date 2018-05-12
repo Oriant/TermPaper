@@ -63,7 +63,7 @@
     <Compile Include="DTO\LotDTO.cs" />
     <Compile Include="DTO\UserDTO.cs" />
     <Compile Include="Infrastructure\BindingModule.cs" />
-    <Compile Include="Infrastructure\MappingConfig.cs" />
+    <Compile Include="Infrastructure\MapperConfig.cs" />
     <Compile Include="Infrastructure\OperationDetails.cs" />
     <Compile Include="Interfaces\IUserService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

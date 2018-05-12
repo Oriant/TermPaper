@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace BLL.Infrastructure
 {
-    public static class MappingConfig
+    public static class MapperConfig
     {
         public static void Init()
         {

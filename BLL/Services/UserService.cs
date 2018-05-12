@@ -64,12 +64,12 @@ namespace BLL.Services
         public UserDTO GetUserById(string id)
         {
             var user = Data.Users.Get(id);
-            return Mapper.Map<User, UserDTO>(user);
+            return AutoMapper.Mapper.Map<User, UserDTO>(user);
         }
 
         public IEnumerable<UserDTO> GetUsers()
         {
-            return Mapper.Map<IEnumerable<User>, IEnumerable<UserDTO>>(Data.Users.GetAll());
+            return AutoMapper.Mapper.Map<IEnumerable<User>, IEnumerable<UserDTO>>(Data.Users.GetAll());
         }
 
         public void Dispose()
