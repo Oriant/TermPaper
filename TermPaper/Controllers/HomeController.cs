@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BLL.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -8,6 +9,13 @@ namespace TermPaper.Controllers
 {
     public class HomeController : Controller
     {
+        readonly IUserService userService;
+
+        public HomeController(IUserService userService)
+        {
+            this.userService = userService;
+        }
+
         public ActionResult Index()
         {
             return View();
@@ -15,14 +23,7 @@ namespace TermPaper.Controllers
 
         public ActionResult About()
         {
-            ViewBag.Message = "Your application description page.";
-
-            return View();
-        }
-
-        public ActionResult Contact()
-        {
-            ViewBag.Message = "Your contact page.";
+            ViewBag.Message = "Description page.";
 
             return View();
         }
