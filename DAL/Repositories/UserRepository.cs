@@ -21,17 +21,17 @@ namespace DAL.Repositories
 
         public IEnumerable<User> GetAll()
         {
-            return Database.Users;
+            return Database.ApplicationUsers;
         }
 
         public User Get(string id)
         {
-            return Database.Users.Find(id);
+            return Database.ApplicationUsers.Find(id);
         }
 
         public void Create(User item)
         {
-            Database.Users.Add(item);
+            Database.ApplicationUsers.Add(item);
         }
 
         public void Update(User item)
@@ -41,14 +41,14 @@ namespace DAL.Repositories
 
         public void Delete(string id)
         {
-            User user = Database.Users.Find(id);
+            User user = Database.ApplicationUsers.Find(id);
             if (user != null)
-                Database.Users.Remove(user);
+                Database.ApplicationUsers.Remove(user);
         }
 
         public IEnumerable<User> Find(Func<User, bool> predicate)
         {
-            return Database.Users.Where(predicate).ToList();
+            return Database.ApplicationUsers.Where(predicate).ToList();
         }
     }
 }

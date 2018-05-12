@@ -20,7 +20,7 @@ namespace DAL.Identity.Repositories
 
         public void Create(User item)
         {
-            Database.Users.Add(item);
+            Database.ApplicationUsers.Add(item);
             Database.SaveChanges();
         }
 

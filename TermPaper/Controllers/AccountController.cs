@@ -84,7 +84,7 @@ namespace TermPaper.Controllers
                 OperationDetails operationDetails = await userService.Create(userDto);
 
                 if (operationDetails.Succedeed)
-                    return View("~/Views/Account/SuccessfulRegister");
+                    return View("~/Views/Account/SuccessfulRegister.cshtml");
                 else
                     ModelState.AddModelError(operationDetails.Property, operationDetails.Message);
             }
