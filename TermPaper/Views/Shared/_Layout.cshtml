@@ -24,9 +24,21 @@
                     <li>@Html.ActionLink("About", "About", "Home")</li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    <li>@Html.ActionLink("Sign in", "Login", "Account")</li>
-                    <li>@Html.ActionLink("Registration", "Register", "Account")</li>
+                    @if (!User.Identity.IsAuthenticated)
+                    {
+                        <li>@Html.ActionLink("Sign", "Login", "Account")</li>
+                        <li>@Html.ActionLink("Registration", "Register", "Account")</li>
+                    }
+                    else
+                    {
+                        <li>
+                            <a>Hello, @User.Identity.Name</a>
+                        </li>
+                        <li>@Html.ActionLink("Sign out", "Logout", "Account")</li>
+                    }
+
                 </ul>
+            </div>
             </div>
         </div>
     </div>
@@ -34,7 +46,7 @@
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+            <p>&copy; @DateTime.Now.Year - Online Auction</p>
         </footer>
     </div>
 
