@@ -39,6 +39,7 @@ namespace TermPaper.Controllers
             {
                 UserDTO userDto = new UserDTO { Email = model.Email, Password = model.Password };
                 ClaimsIdentity claim = await userService.Authentificate(userDto);
+
                 if (claim == null)
                 {
                     ModelState.AddModelError("", "Invalid name/password");
@@ -50,9 +51,11 @@ namespace TermPaper.Controllers
                     {
                         IsPersistent = true
                     }, claim);
+
                     return RedirectToAction("Index", "Home");
                 }
             }
+
             return View(model);
         }
 
@@ -88,6 +91,7 @@ namespace TermPaper.Controllers
                 else
                     ModelState.AddModelError(operationDetails.Property, operationDetails.Message);
             }
+
             return View(model);
         }
     }

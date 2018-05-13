@@ -30,6 +30,7 @@ namespace BLL.Services
         public async Task<OperationDetails> Create(UserDTO userDto)
         {
             var user = await Database.UserManager.FindByEmailAsync(userDto.Email);
+
             if (user == null)
             {
                 user = new ApplicationUser { Email = userDto.Email, UserName = userDto.Email };
