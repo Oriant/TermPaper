@@ -41,7 +41,7 @@ namespace TermPaper.Controllers
                 ClaimsIdentity claim = await userService.Authentificate(userDto);
                 if (claim == null)
                 {
-                    ModelState.AddModelError("", "Неверный логин или пароль.");
+                    ModelState.AddModelError("", "Invalid name/password");
                 }
                 else
                 {
