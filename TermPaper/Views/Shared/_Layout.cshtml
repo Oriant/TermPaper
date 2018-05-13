@@ -26,7 +26,7 @@
                 <ul class="nav navbar-nav navbar-right">
                     @if (!User.Identity.IsAuthenticated)
                     {
-                        <li>@Html.ActionLink("Sign", "Login", "Account")</li>
+                        <li>@Html.ActionLink("Sign In", "Login", "Account")</li>
                         <li>@Html.ActionLink("Registration", "Register", "Account")</li>
                     }
                     else
