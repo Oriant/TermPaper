@@ -39,9 +39,11 @@ namespace BLL.Services
                     return new OperationDetails(false, result.Errors.FirstOrDefault(), "");
 
                 await Database.UserManager.AddToRoleAsync(user.Id, userDto.Role);
+
                 User clientProfile = new User { Id = user.Id, Name = userDto.Name };
                 Database.ClientManager.Create(clientProfile);
                 await Database.SaveAsync();
+
                 return new OperationDetails(true, "Registration has been successful", "");
             }
             else
