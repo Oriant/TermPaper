@@ -22,11 +22,31 @@ namespace TermPaper.Controllers
 			IEnumerable<LotDTO> lotsDTOs = lotService.GetLots();
 			var mapper = new MapperConfiguration(cfg => cfg.CreateMap<LotDTO, LotModel>()).CreateMapper();
 			var lots = mapper.Map<IEnumerable<LotDTO>, List<LotModel>>(lotsDTOs);
+
+			IEnumerable<CategoryDTO> categoryDTOs = lotService.GetCategories();
+			var categoryMapper = new MapperConfiguration(cfg => cfg.CreateMap<CategoryDTO, CategoryModel>()).CreateMapper();
+			var categories = mapper.Map<IEnumerable<CategoryDTO>, List<CategoryModel>>(categoryDTOs);
+
+			ViewBag.lotCategory = new SelectList(categories);
+
+
+
+			if (!String.IsNullOrEmpty(searchString))
+			{
+				lots = (lots.Where(s => s.Name.Contains(searchString))).ToList();
+			}
+
+			if (!string.IsNullOrEmpty(lotCategory))
+			{
+				lots = (lots.Where(x => x.Category.Name == lotCategory)).ToList();
+			}
+
 			return View(lots);
-			
+
+
 		}
 
-		
+
 
 		/*public ActionResult MakeLot(int? id)
 		{
