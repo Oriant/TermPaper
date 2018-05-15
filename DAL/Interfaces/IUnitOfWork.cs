@@ -10,6 +10,8 @@ namespace DAL.Interfaces
     public interface IUnitOfWork : IDisposable
     {
         IUserRepository Users { get; }
+		IRepository<Lot> Lots { get; }
+		IRepository<Category> Categories { get; }
         void Save();
     }
 }

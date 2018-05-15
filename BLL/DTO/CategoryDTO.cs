@@ -12,12 +12,12 @@ namespace BLL.DTO
 
         public string Name { get; set; }
 
-        public ICollection<LotDTO> RelatedLots { get; set; }
+        //public ICollection<LotDTO> RelatedLots { get; set; }
 
-        public CategoryDTO()
+        /*public CategoryDTO()
         {
             RelatedLots = new List<LotDTO>();
-        }
+        }*/
 
         public override string ToString()
         {

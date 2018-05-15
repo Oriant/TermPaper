@@ -10,10 +10,11 @@ using System.Threading.Tasks;
 
 namespace DAL.EF
 {
-    public class AuctionContext : IdentityDbContext<ApplicationUser>
+    public class AuctionContext : IdentityDbContext<ApplicationUser>, DbContext
     {
         public DbSet<User> ApplicationUsers { get; set; }
         public DbSet<Category> Categories { get; set; }
+		public DbSet<Lot> Lots { get; set; }
 
         static AuctionContext()
         {

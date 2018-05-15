@@ -20,16 +20,12 @@ namespace DAL.Entities
 
         public bool IsConfirmed { get; set; }
 
-        public virtual ICollection<Category> Categories { get; set; }
+        public virtual Category Category { get; set; }
+		public int CategoryId { get; set; }
 
         public string UserId { get; set; }
         public virtual User User { get; set; }
 
-        public Lot()
-        {
-            IsConfirmed = false;
-            Categories = new List<Category>();
-
-        }
+        
     }
 }

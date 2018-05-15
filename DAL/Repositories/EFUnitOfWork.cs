@@ -1,4 +1,5 @@
 ﻿using DAL.EF;
+using DAL.Entities;
 using DAL.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -8,18 +9,37 @@ using System.Threading.Tasks;
 
 namespace DAL.Repositories
 {
-    public class EFUnitOfWork : IUnitOfWork
-    {
-        private AuctionContext db;
-        private UserRepository userRepository;
-        private bool disposed = false;
+	public class EFUnitOfWork : IUnitOfWork
+	{
+		private AuctionContext db;
+		private UserRepository userRepository;
+		private CategoryRepository categoryRepository;
+		private LotRepository lotRepository;
+		private bool disposed = false;
 
-        public EFUnitOfWork(string connectionString)
-        {
-            db = new AuctionContext(connectionString);
-        }
-
-        public IUserRepository Users
+		public EFUnitOfWork(string connectionString)
+		{
+			db = new AuctionContext(connectionString);
+		}
+		public IRepository<Lot> Lots
+		{
+			get
+			{
+				if (lotRepository == null)
+					lotRepository = new LotRepository(db);
+				return (lotRepository);
+			}
+		}
+		public IRepository<Category> Categories
+		{
+			get
+			{
+				if (categoryRepository == null)
+					categoryRepository = new CategoryRepository(db);
+				return (categoryRepository);
+			}
+		}
+		public IUserRepository Users
         {
             get
             {

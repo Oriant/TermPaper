@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DAL.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,13 +19,16 @@ namespace BLL.DTO
 
         public bool IsConfirmed { get; set; }
 
-        public ICollection<CategoryDTO> Categories { get; set; }
+        public CategoryDTO Category { get; set; }
+		public int CategoryId { get; set; }
 
-        public UserDTO User { get; set; }
+		public string UserId { get; set; }
+
+		//public UserDTO User { get; set; }
 
         public LotDTO()
         {
-            Categories = new List<CategoryDTO>();
+            
             IsConfirmed = false;
         }
     }
