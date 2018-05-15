@@ -43,7 +43,7 @@ namespace DAL.Repositories
 
 		public IEnumerable<Lot> GetAll()
 		{
-			return db.Lots;
+            return db.Lots.Include("Category");
 		}
 
 		public void Update(Lot item)

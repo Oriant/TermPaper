@@ -10,12 +10,12 @@
     @using (Html.BeginForm("Index", "Lot", FormMethod.Get))
     {
     <p>
-        Genre: @Html.DropDownList("lotCategory", "All")
-        Title: @Html.TextBox("SearchString") <br />
+        Category: @Html.DropDownList("lotCategory", "All")
+        Name: @Html.TextBox("SearchString") <br />
         <input type="submit" value="Filter" />
     </p>
 }
-    </p>
+
     <table class="table">
         <tr>
             <th>
