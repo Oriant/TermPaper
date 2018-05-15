@@ -48,6 +48,13 @@ namespace DAL.EF
 
             userManager.AddToRole(user.Id, userRole.Name);
 
+            db.Categories.Add(new Category { Name = "Sport and Health" });
+            db.Categories.Add(new Category { Name = "Electronics" });
+            db.Categories.Add(new Category { Name = "Clothing" });
+            db.Categories.Add(new Category { Name = "Home and garden" });
+            db.Categories.Add(new Category { Name = "For kids" });
+            db.Categories.Add(new Category { Name = "Car parts" });
+
             base.Seed(db);
         }
     }

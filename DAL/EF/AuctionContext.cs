@@ -13,6 +13,7 @@ namespace DAL.EF
     public class AuctionContext : IdentityDbContext<ApplicationUser>
     {
         public DbSet<User> ApplicationUsers { get; set; }
+        public DbSet<Category> Categories { get; set; }
 
         static AuctionContext()
         {
