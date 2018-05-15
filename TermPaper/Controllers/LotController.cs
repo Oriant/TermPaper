@@ -17,40 +17,16 @@ namespace TermPaper.Controllers
 		{
 			lotService = serv;
 		}
-		public ActionResult Index()
+		public ActionResult Index(string lotCategory, string searchString)
 		{
 			IEnumerable<LotDTO> lotsDTOs = lotService.GetLots();
 			var mapper = new MapperConfiguration(cfg => cfg.CreateMap<LotDTO, LotModel>()).CreateMapper();
-			var phones = mapper.Map<IEnumerable<LotDTO>, List<LotModel>>(lotsDTOs);
-			return View(phones);
-		}
-
-		public ActionResult Find(string lotCategory, string searchString)
-		{
-			var categoryList = new List<string>();
-
-			var CategoryQry = from d in lotService.GetCategories()
-						   orderby d.Name
-						   select d.Name;
-
-			categoryList.AddRange(CategoryQry.Distinct());
-			ViewBag.lotCategory = new SelectList(categoryList);
-
-			var lots = from m in lotService.GetLots()
-						 select m;
-
-			if (!String.IsNullOrEmpty(searchString))
-			{
-				lots = lots.Where(s => s.Name.Contains(searchString));
-			}
-
-			if (!string.IsNullOrEmpty(lotCategory))
-			{
-				lots = lots.Where(x => x.Category.Name == lotCategory);
-			}
-
+			var lots = mapper.Map<IEnumerable<LotDTO>, List<LotModel>>(lotsDTOs);
 			return View(lots);
+			
 		}
+
+		
 
 		/*public ActionResult MakeLot(int? id)
 		{

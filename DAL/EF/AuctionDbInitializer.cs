@@ -46,16 +46,23 @@ namespace DAL.EF
             userManager.AddToRole(manager.Id, managerRole.Name);
             userManager.AddToRole(manager.Id, userRole.Name);
 
-            userManager.AddToRole(user.Id, userRole.Name);
+			userManager.AddToRole(user.Id, userRole.Name);
 
-            db.Categories.Add(new Category { Name = "Sport and Health" });
-            db.Categories.Add(new Category { Name = "Electronics" });
+			//TO:DO delete this!
+
+			Category temp = new Category { Name = "Electronics" };
+
+			db.Categories.Add(new Category { Name = "Sport and Health" });
+            db.Categories.Add(temp);
             db.Categories.Add(new Category { Name = "Clothing" });
             db.Categories.Add(new Category { Name = "Home and garden" });
             db.Categories.Add(new Category { Name = "For kids" });
-            db.Categories.Add(new Category { Name = "Car parts" });
+			db.Categories.Add(new Category { Name = "Car parts" });
 
-            base.Seed(db);
+			db.Lots.Add(new Lot { Name = "Computer", Category = temp, Description = "Good old PC", Price = 222 });
+			db.Lots.Add(new Lot { Name = "Gold chain", Category = temp, Description = "Gold chain, nigga", Price = 999 });
+
+			base.Seed(db);
         }
     }
 }
