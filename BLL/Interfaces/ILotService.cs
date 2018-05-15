@@ -9,7 +9,7 @@ namespace BLL.Interfaces
 {
 	interface ILotService
 	{
-		void BargainLot(LotDTO lotDTO);
+		void MakeLot(LotDTO lotDTO);
 		CategoryDTO GetCategory(int? id);
 		IEnumerable<CategoryDTO> GetCategories();
 		IEnumerable<LotDTO> GetLots();

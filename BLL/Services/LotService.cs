@@ -12,23 +12,16 @@ using System.Threading.Tasks;
 
 namespace BLL.Services
 {
-	public class LotService : ILotService
+	public class ILotService : Interfaces.ILotService
 	{
 		IUnitOfWork Database { get; set; }
-		public LotService(IUnitOfWork unitOfWork)
+		public ILotService(IUnitOfWork unitOfWork)
 		{
 			Database = unitOfWork;
 		}
 
-		public void BargainLot(LotDTO lotDTO)
+		public void MakeLot(LotDTO lotDTO)
 		{
-			Category category = Database.Categories.Get(lotDTO.CategoryId);
-
-			
-			if (category == null)
-				throw new ValidationException("Лот не найден");
-
-
 			Lot lot = new Lot
 			{
 				Name = lotDTO.Name,

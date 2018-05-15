@@ -26,10 +26,6 @@ namespace BLL.DTO
 
 		//public UserDTO User { get; set; }
 
-        public LotDTO()
-        {
-            
-            IsConfirmed = false;
-        }
+        
     }
 }

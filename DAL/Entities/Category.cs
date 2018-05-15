@@ -16,9 +16,6 @@ namespace DAL.Entities
 
         public virtual ICollection<Lot> RelatedLots { get; set; }
 
-        public Category()
-        {
-            RelatedLots = new List<Lot>();
-        }
+        
     }
 }
