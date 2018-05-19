@@ -52,7 +52,7 @@ namespace TermPaper.Controllers
             LotModel lotModel = lotMapper.Map<LotModel>(lot);
 
             if (lot == null)
-                return View("Not Found");
+                return View("~/Views/Lot/NotFound.cshtml");
             else
                 return View(lotModel);
         }
