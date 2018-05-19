@@ -12,15 +12,16 @@ using System.Threading.Tasks;
 
 namespace BLL.Services
 {
-	public class ILotService : Interfaces.ILotService
+	public class LotService : ILotService
 	{
 		IUnitOfWork Database { get; set; }
-		public ILotService(IUnitOfWork unitOfWork)
+
+		public LotService(IUnitOfWork unitOfWork)
 		{
 			Database = unitOfWork;
 		}
 
-		public void MakeLot(LotDTO lotDTO)
+		public void CreateLot(LotDTO lotDTO)
 		{
 			Lot lot = new Lot
 			{
@@ -32,6 +33,7 @@ namespace BLL.Services
 				UserId = lotDTO.UserId
 				
 			};
+
 			Database.Lots.Create(lot);
 			Database.Save();
 		}
@@ -39,10 +41,12 @@ namespace BLL.Services
 		public CategoryDTO GetCategory(int? id)
 		{
 			if (id == null)
-				throw new ValidationException("Не установлено id категории");
+				throw new ValidationException("Category ID undefined");
+
 			var category = Database.Categories.Get(id.Value);
+
 			if (category == null)
-				throw new ValidationException("Категория не найдена");
+				throw new ValidationException("Category not found");
 
 			return new CategoryDTO {  Id = category.Id, Name = category.Name };
 		}
@@ -63,7 +67,17 @@ namespace BLL.Services
 			return mapper.Map<IEnumerable<Lot>, List<LotDTO>>(Database.Lots.GetAll());
 		}
 
-		public void Dispose()
+        public LotDTO GetLotById(int id)
+        {
+            var lot = Database.Lots.Get(id);
+
+            if (lot != null)
+                return Mapper.Map<Lot, LotDTO>(lot);
+            else
+                return null;
+        }
+
+        public void Dispose()
 		{
 			throw new NotImplementedException();
 		}

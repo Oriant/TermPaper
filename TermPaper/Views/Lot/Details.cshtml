@@ -1,0 +1,21 @@
+﻿@model TermPaper.Models.LotModel
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<p>
+    <b>@Model.Name</b><br />
+    <b>Description:</b>@Model.Description<br />
+    <b>Price:</b>@Model.Price<br />
+    @if (this.User.IsInRole("user"))
+    {
+        <input type="submit" class="btn btn-success col-sm-1" value="Make a rate" /><br />
+    }
+    <input type="submit" class="btn btn-primary col-sm-1" value="Back to list" onclick="location.href='@Url.Action("Index", "Lot")'" />
+
+</p>
+

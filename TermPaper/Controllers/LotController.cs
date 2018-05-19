@@ -12,24 +12,24 @@ namespace TermPaper.Controllers
 {
 	public class LotController : Controller
 	{
-		ILotService lotService;
-		public LotController(ILotService serv)
+		private LotService lotService;
+
+		public LotController(LotService serv)
 		{
 			lotService = serv;
 		}
+
 		public ActionResult Index(string lotCategory, string searchString)
 		{
 			IEnumerable<LotDTO> lotsDTOs = lotService.GetLots();
-			var mapper = new MapperConfiguration(cfg => cfg.CreateMap<LotDTO, LotModel>()).CreateMapper();
-			var lots = mapper.Map<IEnumerable<LotDTO>, List<LotModel>>(lotsDTOs);
+			var lotMapper = new MapperConfiguration(cfg => cfg.CreateMap<LotDTO, LotModel>()).CreateMapper();
+			var lots = lotMapper.Map<IEnumerable<LotDTO>, List<LotModel>>(lotsDTOs);
 
 			IEnumerable<CategoryDTO> categoryDTOs = lotService.GetCategories();
 			var categoryMapper = new MapperConfiguration(cfg => cfg.CreateMap<CategoryDTO, CategoryModel>()).CreateMapper();
-			var categories = mapper.Map<IEnumerable<CategoryDTO>, List<CategoryModel>>(categoryDTOs);
+			var categories = categoryMapper.Map<IEnumerable<CategoryDTO>, List<CategoryModel>>(categoryDTOs);
 
 			ViewBag.lotCategory = new SelectList(categories);
-
-
 
 			if (!String.IsNullOrEmpty(searchString))
 			{
@@ -42,9 +42,20 @@ namespace TermPaper.Controllers
 			}
 
 			return View(lots);
-
-
 		}
+
+        public ActionResult Details(int id)
+        {
+            var lot = lotService.GetLotById(id);
+
+            var lotMapper = new MapperConfiguration(cfg => cfg.CreateMap<LotDTO, LotModel>()).CreateMapper();
+            LotModel lotModel = lotMapper.Map<LotModel>(lot);
+
+            if (lot == null)
+                return View("Not Found");
+            else
+                return View(lotModel);
+        }
 
 
 

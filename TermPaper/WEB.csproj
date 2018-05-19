@@ -244,6 +244,8 @@
     <Content Include="Views\Account\Register.cshtml" />
     <Content Include="Views\Lot\Index.cshtml" />
     <Content Include="Views\Lot\Create.cshtml" />
+    <Content Include="Views\Lot\NotFound.cshtml" />
+    <Content Include="Views\Lot\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
