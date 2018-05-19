@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BLL.Interfaces
 {
-	interface ILotService
+	public interface ILotService
 	{
 		void CreateLot(LotDTO lotDTO);
 		CategoryDTO GetCategory(int? id);
