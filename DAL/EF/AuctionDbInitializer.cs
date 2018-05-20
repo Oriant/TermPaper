@@ -57,10 +57,30 @@ namespace DAL.EF
             db.Categories.Add(new Category { Name = "Car parts" });
             db.SaveChanges();
 
-            db.Lots.Add(new Lot { Name = "Computer", Category = db.Categories.SingleOrDefault(x => x.Name == "Electronics"),
-                Description = "Good old PC", Price = 222 });
-			db.Lots.Add(new Lot { Name = "Gold chain", Category = db.Categories.SingleOrDefault(x => x.Name == "Clothing"),
-                Description = "Gold chain, nigga", Price = 999 });
+            db.Lots.Add(new Lot
+            {
+                Name = "Computer",
+                Category = db.Categories.SingleOrDefault(x => x.Name == "Electronics"),
+                Description = "Good old PC",
+                Price = 222,
+                IsConfirmed = true
+            });
+            db.Lots.Add(new Lot
+            {
+                Name = "Gold chain",
+                Category = db.Categories.SingleOrDefault(x => x.Name == "Clothing"),
+                Description = "Gold chain, nigga",
+                Price = 999,
+                IsConfirmed = false
+            });
+            db.Lots.Add(new Lot
+            {
+                Name = "Shovel",
+                Category = db.Categories.SingleOrDefault(x => x.Name == "Home and garden"),
+                Description = "Shovel for digging",
+                Price = 55,
+                IsConfirmed = true
+            });
 
 			base.Seed(db);
         }

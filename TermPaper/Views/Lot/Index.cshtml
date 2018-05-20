@@ -32,6 +32,8 @@
 
             @foreach (var item in Model)
             {
+                if(item.IsConfirmed)
+                {
                 <tr>
                     <td>
                         @Html.DisplayFor(modelItem => item.Name)
@@ -56,6 +58,7 @@
                     }
 
                 </tr>
+                }
             }
 
         </table>

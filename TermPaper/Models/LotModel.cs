@@ -17,7 +17,8 @@ namespace TermPaper.Models
 
 		public decimal Price { get; set; }
 
-		//public bool IsConfirmed { get; set; }
+		public bool IsConfirmed { get; set; }
+
 		[Display(Name = "Category")]
 		public virtual CategoryDTO Category { get; set; }
 		public int CategoryId { get; set; }

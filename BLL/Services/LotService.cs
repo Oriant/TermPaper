@@ -64,7 +64,8 @@ namespace BLL.Services
 			var mapper = new MapperConfiguration(cfg =>
 			cfg.CreateMap<Lot, LotDTO>()).CreateMapper();
 
-			return mapper.Map<IEnumerable<Lot>, List<LotDTO>>(Database.Lots.GetAll());
+			return mapper.Map<IEnumerable<Lot>, List<LotDTO>>(Database.Lots.GetAll()
+                .Where(x => x.IsConfirmed == true));
 		}
 
         public LotDTO GetLotById(int id)
