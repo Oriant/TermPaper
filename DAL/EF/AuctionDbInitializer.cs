@@ -41,11 +41,7 @@ namespace DAL.EF
             userManager.Create(user, userPassword);
 
             userManager.AddToRole(admin.Id, adminRole.Name);
-            userManager.AddToRole(admin.Id, userRole.Name);
-
             userManager.AddToRole(manager.Id, managerRole.Name);
-            userManager.AddToRole(manager.Id, userRole.Name);
-
 			userManager.AddToRole(user.Id, userRole.Name);
 
 
@@ -62,7 +58,7 @@ namespace DAL.EF
                 Name = "Computer",
                 Category = db.Categories.SingleOrDefault(x => x.Name == "Electronics"),
                 Description = "Good old PC",
-                Price = 222,
+                Price = 222
             });
             db.Lots.Add(new Lot
             {

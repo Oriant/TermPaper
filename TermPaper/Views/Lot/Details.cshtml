@@ -14,8 +14,11 @@
     @if (this.User.IsInRole("user"))
     {
         <input type="submit" class="btn btn-success col-sm-1" value="Make a rate" /><br />
+        <input type="submit" class="btn btn-primary col-sm-1" value="Back to list" onclick="location.href='@Url.Action("Index", "Lot")'" />
     }
-    <input type="submit" class="btn btn-primary col-sm-1" value="Back to list" onclick="location.href='@Url.Action("Index", "Lot")'" />
-
+    @if (this.User.IsInRole("manager"))
+    {
+        <input type="submit" class="btn btn-primary col-sm-1" value="Back to list" onclick="location.href='@Url.Action("Index", "Manager")'" />
+    }
 </p>
 

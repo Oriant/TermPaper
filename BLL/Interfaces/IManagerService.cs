@@ -7,9 +7,10 @@ using System.Threading.Tasks;
 
 namespace BLL.Interfaces
 {
-    interface IManagerService
+    public interface IManagerService
     {
-        void ConfirmLot(LotDTO lotDto);
+        void ConfirmLot(int id);
+        void DeclineLot(int id);
         IEnumerable<LotDTO> GetUnconfirmedLots();
     }
 }

@@ -4,7 +4,7 @@
     ViewBag.Title = "Lots";
 }
 
-<h2>Index</h2>
+<h2>Available lots</h2>
 <p>
     @using (Html.BeginForm("Index", "Lot", FormMethod.Get))
     {
@@ -48,15 +48,6 @@
                         <input type="button" class="btn btn-info" value="View details" 
                                onclick="location.href='@Url.Action("Details", "Lot", new { id = item.Id })'" />
                     </td>
-
-                    @if (this.User.IsInRole("admin"))
-                    {
-                        <td>
-                            @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                            @Html.ActionLink("Delete", "Delete", new { id = item.Id })
-                        </td>
-                    }
-
                 </tr>
                 }
             }
