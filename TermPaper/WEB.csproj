@@ -246,6 +246,7 @@
     <Content Include="Views\Lot\Create.cshtml" />
     <Content Include="Views\Lot\NotFound.cshtml" />
     <Content Include="Views\Lot\Details.cshtml" />
+    <Content Include="Views\Lot\MakeLot.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

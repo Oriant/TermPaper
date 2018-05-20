@@ -12,8 +12,9 @@ namespace TermPaper.Util
     {
         public override void Load()
         {
-            Bind<IUserService>().To<UserService>();
-            Bind<ILotService>().To<LotService>();
-        }
+			Bind<IUserService>().To<UserService>();
+			Bind<ICategoryService>().To<CategoryService>();
+			Bind<ILotService>().To<LotService>();
+		}
     }
 }

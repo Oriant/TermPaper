@@ -10,6 +10,7 @@ namespace BLL.Interfaces
 	public interface ILotService
 	{
 		void CreateLot(LotDTO lotDTO);
+		LotDTO GetLotById(int id);
 		IEnumerable<LotDTO> GetLots();
 		void Dispose();
 	}
