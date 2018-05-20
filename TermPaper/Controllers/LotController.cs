@@ -49,25 +49,31 @@ namespace TermPaper.Controllers
 			return View(lots);
 		}
 
-        public ActionResult Details(int id)
-        {
-            var lot = lotService.GetLotById(id);
+		public ActionResult Details(int id)
+		{
+			var lot = lotService.GetLotById(id);
 
-            var lotMapper = new MapperConfiguration(cfg => cfg.CreateMap<LotDTO, LotModel>()).CreateMapper();
-            LotModel lotModel = lotMapper.Map<LotModel>(lot);
+			var lotMapper = new MapperConfiguration(cfg => cfg.CreateMap<LotDTO, LotModel>()).CreateMapper();
+			LotModel lotModel = lotMapper.Map<LotModel>(lot);
 
-            if (lot == null)
-                return View("~/Views/Lot/NotFound.cshtml");
-            else
-                return View(lotModel);
-        }
+			if (lot == null)
+				return View("~/Views/Lot/NotFound.cshtml");
+			else
+				return View(lotModel);
+		}
 
 
-
+		/*
 		public ActionResult MakeLot(int id)
 		{
 			try
 			{
+				IEnumerable<CategoryDTO> categoryDTOs = categoryService.GetCategories();
+				var categoryMapper = new MapperConfiguration(cfg => cfg.CreateMap<CategoryDTO, CategoryModel>()).CreateMapper();
+				var categories = categoryMapper.Map<IEnumerable<CategoryDTO>, List<CategoryModel>>(categoryDTOs);
+
+				ViewBag.lotCategory = new SelectList(categories);
+
 				CategoryDTO category = categoryService.GetCategory(id);
 				var lot = new LotModel { CategoryId = id };
 
@@ -83,7 +89,7 @@ namespace TermPaper.Controllers
 		{
 			try
 			{
-				var lotDto = new LotDTO { Name = lot.Name, Description = lot.Description, IsConfirmed = lot.IsConfirmed, CategoryId = lot.CategoryId, Price = lot.Price    };
+				var lotDto = new LotDTO { Name = lot.Name, Description = lot.Description, IsConfirmed = lot.IsConfirmed, CategoryId = lot.CategoryId, Price = lot.Price };
 				lotService.CreateLot(lotDto);
 				return Content("<h2>Ваш заказ успешно оформлен</h2>");
 			}
@@ -92,6 +98,30 @@ namespace TermPaper.Controllers
 				ModelState.AddModelError(ex.Message, ex.Property);
 			}
 			return View(lot);
+		}
+		*/
+		public ActionResult MakeLot()
+		{
+			IEnumerable<CategoryDTO> categoryDTOs = categoryService.GetCategories();
+			var categoryMapper = new MapperConfiguration(cfg => cfg.CreateMap<CategoryDTO, CategoryModel>()).CreateMapper();
+			var categories = categoryMapper.Map<IEnumerable<CategoryDTO>, List<CategoryModel>>(categoryDTOs);
+
+			ViewBag.lotCategory = new SelectList(categories);
+			return View();
+		}
+
+		
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public ActionResult MakeLot([Bind(Include = "Id,Name,Descriotion,Price,isConfirmed,Category")] LotDTO lotDto)
+		{
+			if (ModelState.IsValid)
+			{
+				lotService.CreateLot(lotDto);
+				return RedirectToAction("Index");
+			}
+
+			return View(lotDto);
 		}
 	}
 }
