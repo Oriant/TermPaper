@@ -8,9 +8,11 @@ namespace BLL.Infrastructure
 {
 	public class ValidationException : Exception
 	{
-		public ValidationException(string message) : base(message)
+		public string Property { get; protected set; }
+		public ValidationException(string message, string prop) : base(message)
 		{
-			
+			Property = prop;
 		}
 	}
 }
+

@@ -3,19 +3,22 @@ using BLL.DTO;
 using BLL.Services;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using TermPaper.Models;
+using BLL.Infrastructure;
+using BLL.Interfaces;
 
 namespace TermPaper.Controllers
 {
 	public class LotController : Controller
 	{
-		private LotService lotService;
-		private CategoryService categoryService;
+		private ILotService lotService;
+		private ICategoryService categoryService;
 
-		public LotController(LotService lotService, CategoryService categoryService)
+		public LotController(ILotService lotService, ICategoryService categoryService)
 		{
 			this.lotService = lotService;
 			this.categoryService = categoryService;
@@ -61,40 +64,34 @@ namespace TermPaper.Controllers
 
 
 
-		/*public ActionResult MakeLot(int? id)
+		public ActionResult MakeLot(int id)
 		{
 			try
 			{
-				PhoneDTO phone = orderService.GetPhone(id);
-				var order = new OrderViewModel { PhoneId = phone.Id };
+				CategoryDTO category = categoryService.GetCategory(id);
+				var lot = new LotModel { CategoryId = id };
 
-				return View(order);
+				return View(lot);
 			}
-			catch (ValidationException ex)
+			catch (BLL.Infrastructure.ValidationException ex)
 			{
 				return Content(ex.Message);
 			}
 		}
 		[HttpPost]
-		public ActionResult MakeOrder(OrderViewModel order)
+		public ActionResult MakeLot(LotModel lot)
 		{
 			try
 			{
-				var orderDto = new OrderDTO { PhoneId = order.PhoneId, Address = order.Address, PhoneNumber = order.PhoneNumber };
-				orderService.MakeOrder(orderDto);
+				var lotDto = new LotDTO { Name = lot.Name, Description = lot.Description, IsConfirmed = lot.IsConfirmed, CategoryId = lot.CategoryId, Price = lot.Price    };
+				lotService.CreateLot(lotDto);
 				return Content("<h2>Ваш заказ успешно оформлен</h2>");
 			}
-			catch (ValidationException ex)
+			catch (BLL.Infrastructure.ValidationException ex)
 			{
-				ModelState.AddModelError(ex.Property, ex.Message);
+				ModelState.AddModelError(ex.Message, ex.Property);
 			}
-			return View(order);
+			return View(lot);
 		}
-		protected override void Dispose(bool disposing)
-		{
-			orderService.Dispose();
-			base.Dispose(disposing);
-		}
-	*/
 	}
 }

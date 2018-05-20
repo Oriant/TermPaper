@@ -30,7 +30,7 @@ namespace BLL.Services
 				Description = lotDTO.Description,
 				CategoryId = lotDTO.CategoryId,
 				Price = lotDTO.Price,
-				Category = lotDTO.Category,
+				//Category = lotDTO.Category,
 				IsConfirmed = lotDTO.IsConfirmed,
 				UserId = lotDTO.UserId
 				
