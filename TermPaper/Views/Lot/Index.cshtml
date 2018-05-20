@@ -6,9 +6,16 @@
 
 <h2>Available lots</h2>
 <p>
+    @if (!(this.User.IsInRole("user")))
+    {
+    
+        @Html.ActionLink("Create New", "MakeLot")
+    
+    }
+   
     @using (Html.BeginForm("Index", "Lot", FormMethod.Get))
     {
-        <p>
+<p>
             Category: @Html.DropDownList("lotCategory", "All")
             Name: @Html.TextBox("SearchString") <br />
             <input type="submit" class="btn btn-primary col-sm-2" value="Filter" />
