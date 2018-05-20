@@ -30,6 +30,8 @@ namespace BLL.Services
 				Description = lotDTO.Description,
 				CategoryId = lotDTO.CategoryId,
 				Price = lotDTO.Price,
+				Category = lotDTO.Category,
+				IsConfirmed = lotDTO.IsConfirmed,
 				UserId = lotDTO.UserId
 				
 			};
@@ -38,26 +40,7 @@ namespace BLL.Services
 			Database.Save();
 		}
 
-		public CategoryDTO GetCategory(int? id)
-		{
-			if (id == null)
-				throw new ValidationException("Category ID undefined");
-
-			var category = Database.Categories.Get(id.Value);
-
-			if (category == null)
-				throw new ValidationException("Category not found");
-
-			return new CategoryDTO {  Id = category.Id, Name = category.Name };
-		}
-
-		public IEnumerable<CategoryDTO> GetCategories()
-		{
-			var mapper = new MapperConfiguration(cfg => 
-			cfg.CreateMap<Category, CategoryDTO>()).CreateMapper();
-
-			return mapper.Map<IEnumerable<Category>, List<CategoryDTO>>(Database.Categories.GetAll());
-		}
+	
 
 		public IEnumerable<LotDTO> GetLots()
 		{
@@ -79,7 +62,7 @@ namespace BLL.Services
 
         public void Dispose()
 		{
-			throw new NotImplementedException();
+			Database.Dispose();
 		}
 
 		

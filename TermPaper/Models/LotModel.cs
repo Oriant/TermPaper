@@ -24,6 +24,6 @@ namespace TermPaper.Models
 		public int CategoryId { get; set; }
 
 		public string UserId { get; set; }
-		//public virtual UserDTO User { get; set; }
+		public virtual UserDTO User { get; set; }
 	}
 }

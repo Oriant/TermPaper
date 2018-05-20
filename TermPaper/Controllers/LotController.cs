@@ -13,10 +13,12 @@ namespace TermPaper.Controllers
 	public class LotController : Controller
 	{
 		private LotService lotService;
+		private CategoryService categoryService;
 
-		public LotController(LotService serv)
+		public LotController(LotService lotService, CategoryService categoryService)
 		{
-			lotService = serv;
+			this.lotService = lotService;
+			this.categoryService = categoryService;
 		}
 
 		public ActionResult Index(string lotCategory, string searchString)
@@ -25,7 +27,7 @@ namespace TermPaper.Controllers
 			var lotMapper = new MapperConfiguration(cfg => cfg.CreateMap<LotDTO, LotModel>()).CreateMapper();
 			var lots = lotMapper.Map<IEnumerable<LotDTO>, List<LotModel>>(lotsDTOs);
 
-			IEnumerable<CategoryDTO> categoryDTOs = lotService.GetCategories();
+			IEnumerable<CategoryDTO> categoryDTOs = categoryService.GetCategories();
 			var categoryMapper = new MapperConfiguration(cfg => cfg.CreateMap<CategoryDTO, CategoryModel>()).CreateMapper();
 			var categories = categoryMapper.Map<IEnumerable<CategoryDTO>, List<CategoryModel>>(categoryDTOs);
 

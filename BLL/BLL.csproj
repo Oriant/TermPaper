@@ -67,9 +67,11 @@
     <Compile Include="Infrastructure\MapperConfig.cs" />
     <Compile Include="Infrastructure\OperationDetails.cs" />
     <Compile Include="Infrastructure\ValidationException.cs" />
+    <Compile Include="Interfaces\ICategorySevice.cs" />
     <Compile Include="Interfaces\ILotService.cs" />
     <Compile Include="Interfaces\IUserService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\CategoryService.cs" />
     <Compile Include="Services\LotService.cs" />
     <Compile Include="Services\UserService.cs" />
   </ItemGroup>
