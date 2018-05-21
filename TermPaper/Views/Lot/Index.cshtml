@@ -6,7 +6,7 @@
 
 <h2>Available lots</h2>
 <p>
-    @if (!(this.User.IsInRole("user")))
+    @if (this.User.IsInRole("user"))
     {
     
         @Html.ActionLink("Create New", "MakeLot")
