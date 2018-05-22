@@ -14,6 +14,8 @@ namespace TermPaper.Controllers
     public class ManagerController : Controller
     {
         private IManagerService service;
+        private IMapper lotMapper = new MapperConfiguration(cfg => cfg.CreateMap<LotDTO, LotModel>()).CreateMapper();
+
 
         public ManagerController(IManagerService service)
         {
@@ -23,7 +25,6 @@ namespace TermPaper.Controllers
         public ActionResult Index()
         {
             IEnumerable<LotDTO> lotsDTOs = service.GetUnconfirmedLots();
-            var lotMapper = new MapperConfiguration(cfg => cfg.CreateMap<LotDTO, LotModel>()).CreateMapper();
             var lots = lotMapper.Map<IEnumerable<LotDTO>, List<LotModel>>(lotsDTOs);
 
             return View(lots);
