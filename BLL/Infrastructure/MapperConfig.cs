@@ -11,30 +11,15 @@ namespace BLL.Infrastructure
 {
 	public static class MapperConfig
 	{
-		public static void Init()
+		public static void Initialize()
 		{
-			Mapper.Initialize(cfg =>
+			Mapper.Initialize(config =>
 			{
-				cfg.CreateMap<User, UserDTO>();
-			});
+                config.CreateMap<User, UserDTO>();
+                config.CreateMap<Lot, LotDTO>();
+                config.CreateMap<Category, CategoryDTO>();
+            });
 
 		}
-
-		public static void LotMapper()
-		{
-			Mapper.Initialize(cfg =>
-			{
-				cfg.CreateMap<Lot, LotDTO>();
-			});
-		}
-
-		public static void CategoryMapper()
-		{
-			Mapper.Initialize(cfg =>
-			{
-				cfg.CreateMap<Category, CategoryDTO>();
-			});
-		}
-
 	}
 }
