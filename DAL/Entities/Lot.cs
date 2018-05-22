@@ -21,7 +21,6 @@ namespace DAL.Entities
 
         public bool IsConfirmed { get; set; }
         
-        [ForeignKey("Category")]
         public int CategoryId { get; set; }
         public Category Category { get; set; }
 

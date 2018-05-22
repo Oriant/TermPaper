@@ -19,11 +19,7 @@ namespace TermPaper.Models
 
 		public bool IsConfirmed { get; set; }
 
-		[Display(Name = "Category")]
-		public virtual CategoryDTO Category { get; set; }
-		public int CategoryId { get; set; }
-
-		public string UserId { get; set; }
-		public virtual UserDTO User { get; set; }
+        [Display(Name = "Category")]
+        public CategoryModel Category { get; set; }
 	}
 }
