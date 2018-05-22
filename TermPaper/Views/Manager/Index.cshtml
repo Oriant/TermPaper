@@ -27,29 +27,29 @@
         {
             if (!item.IsConfirmed)
             {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Price)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Category.Name)
-            </td>
-            <td>
-                <input type="button" class="btn btn-info" value="View details"
-                       onclick="location.href='@Url.Action("Details", "Lot", new { id = item.Id })'" />
-            </td>
-            <td>
-                <input type="button" class="btn btn-success" value="Confirm"
-                       onclick="location.href='@Url.Action("Confirm", "Manager", new { id = item.Id })'" />
-            </td>
-            <td>
-                <input type="button" class="btn btn-danger" value="Decline"
-                       onclick="location.href='@Url.Action("Decline", "Manager", new { id = item.Id })'" />
-            </td>
-        </tr>
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Price)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Category.Name)
+                    </td>
+                    <td>
+                        <input type="button" class="btn btn-info" value="View details"
+                               onclick="location.href= '@Url.Action("Details", "Lot", new { id = item.Id })'" />
+                    </td>
+                    <td>
+                        <input type="button" class="btn btn-success" value="Confirm"
+                               onclick="location.href='@Url.Action("Confirm", "Manager", new { id = item.Id })'" />
+                    </td>
+                    <td>
+                        <input type="button" class="btn btn-danger" value="Decline"
+                               onclick="location.href='@Url.Action("Decline", "Manager", new { id = item.Id })'" />
+                    </td>
+                </tr>
             }
         }
 

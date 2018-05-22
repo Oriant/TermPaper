@@ -69,7 +69,6 @@ namespace DAL.EF
             userManager.AddToRole(admin.Id, userRole.Name);
 
             userManager.AddToRole(manager.Id, managerRole.Name);
-            userManager.AddToRole(manager.Id, userRole.Name);
 
 			userManager.AddToRole(user.Id, userRole.Name);
 

@@ -15,6 +15,7 @@ namespace TermPaper.Util
 			Bind<IUserService>().To<UserService>();
 			Bind<ICategoryService>().To<CategoryService>();
 			Bind<ILotService>().To<LotService>();
+            Bind<IManagerService>().To<ManagerService>();
 		}
     }
 }
