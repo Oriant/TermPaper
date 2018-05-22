@@ -14,12 +14,13 @@ namespace TermPaper.Controllers
     public class ManagerController : Controller
     {
         private IManagerService service;
-        private IMapper lotMapper = new MapperConfiguration(cfg => cfg.CreateMap<LotDTO, LotModel>()).CreateMapper();
+        private IMapper lotMapper; 
 
 
         public ManagerController(IManagerService service)
         {
             this.service = service;
+            lotMapper = new MapperConfiguration(cfg => cfg.CreateMap<LotDTO, LotModel>()).CreateMapper();
         }
 
         public ActionResult Index()
