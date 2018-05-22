@@ -19,13 +19,8 @@ namespace BLL.DTO
 
         public bool IsConfirmed { get; set; }
 
-        public Category Category { get; set; }
-		public int CategoryId { get; set; }
+        public CategoryDTO Category { get; set; }
 
-		public string UserId { get; set; }
-
-		//public UserDTO User { get; set; }
-
-        
+        public string UserId { get; set; }
     }
 }

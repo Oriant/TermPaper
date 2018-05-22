@@ -10,6 +10,7 @@ using System.Web.Mvc;
 using TermPaper.Models;
 using BLL.Infrastructure;
 using BLL.Interfaces;
+using Microsoft.AspNet.Identity;
 
 namespace TermPaper.Controllers
 {
@@ -17,33 +18,36 @@ namespace TermPaper.Controllers
 	{
 		private ILotService lotService;
 		private ICategoryService categoryService;
+        private IUserService userService;
+        private IMapper lotMapper, categoryMapper; 
 
-		public LotController(ILotService lotService, ICategoryService categoryService)
+        public LotController(ILotService lotService, ICategoryService categoryService, IUserService userService)
 		{
+            this.userService = userService;
 			this.lotService = lotService;
 			this.categoryService = categoryService;
-		}
+            lotMapper = new MapperConfiguration(cfg => cfg.CreateMap<LotDTO, LotModel>()).CreateMapper();
+            categoryMapper = new MapperConfiguration(cfg => cfg.CreateMap<CategoryDTO, CategoryModel>()).CreateMapper();
+        }
 
-		public ActionResult Index(string lotCategory, string searchString)
+		public ActionResult Index(string category, string searchString)
 		{
 			IEnumerable<LotDTO> lotsDTOs = lotService.GetLots();
-			var lotMapper = new MapperConfiguration(cfg => cfg.CreateMap<LotDTO, LotModel>()).CreateMapper();
-			var lots = lotMapper.Map<IEnumerable<LotDTO>, List<LotModel>>(lotsDTOs);
+            var lots = lotMapper.Map<IEnumerable<LotDTO>, List<LotModel>>(lotsDTOs);
 
 			IEnumerable<CategoryDTO> categoryDTOs = categoryService.GetCategories();
-			var categoryMapper = new MapperConfiguration(cfg => cfg.CreateMap<CategoryDTO, CategoryModel>()).CreateMapper();
 			var categories = categoryMapper.Map<IEnumerable<CategoryDTO>, List<CategoryModel>>(categoryDTOs);
 
-			ViewBag.lotCategory = new SelectList(categories);
+			ViewBag.category = new SelectList(categories);
 
 			if (!String.IsNullOrEmpty(searchString))
 			{
 				lots = (lots.Where(s => s.Name.Contains(searchString))).ToList();
 			}
 
-			if (!string.IsNullOrEmpty(lotCategory))
+			if (!string.IsNullOrEmpty(category))
 			{
-				lots = (lots.Where(x => x.Category.Name == lotCategory)).ToList();
+				lots = (lots.Where(x => x.Category.Name == category)).ToList();
 			}
 
 			return View(lots);
@@ -53,7 +57,6 @@ namespace TermPaper.Controllers
 		{
 			var lot = lotService.GetLotById(id);
 
-			var lotMapper = new MapperConfiguration(cfg => cfg.CreateMap<LotDTO, LotModel>()).CreateMapper();
 			LotModel lotModel = lotMapper.Map<LotModel>(lot);
 
 			if (lot == null)
@@ -63,65 +66,70 @@ namespace TermPaper.Controllers
 		}
 
 
-		/*
-		public ActionResult MakeLot(int id)
-		{
-			try
-			{
-				IEnumerable<CategoryDTO> categoryDTOs = categoryService.GetCategories();
-				var categoryMapper = new MapperConfiguration(cfg => cfg.CreateMap<CategoryDTO, CategoryModel>()).CreateMapper();
-				var categories = categoryMapper.Map<IEnumerable<CategoryDTO>, List<CategoryModel>>(categoryDTOs);
+        private IEnumerable<SelectListItem> GetSelectListItems(IEnumerable<CategoryModel> elements)
+        {
+            var selectList = new List<SelectListItem>();
 
-				ViewBag.lotCategory = new SelectList(categories);
+            foreach (var element in elements)
+            {
+                selectList.Add(new SelectListItem
+                {
+                    Value = element.Id.ToString(),
+                    Text = element.Name
+                });
+            }
 
-				CategoryDTO category = categoryService.GetCategory(id);
-				var lot = new LotModel { CategoryId = id };
+            return selectList;
+        }
 
-				return View(lot);
-			}
-			catch (BLL.Infrastructure.ValidationException ex)
-			{
-				return Content(ex.Message);
-			}
-		}
-		[HttpPost]
-		public ActionResult MakeLot(LotModel lot)
-		{
-			try
-			{
-				var lotDto = new LotDTO { Name = lot.Name, Description = lot.Description, IsConfirmed = lot.IsConfirmed, CategoryId = lot.CategoryId, Price = lot.Price };
-				lotService.CreateLot(lotDto);
-				return Content("<h2>Ваш заказ успешно оформлен</h2>");
-			}
-			catch (BLL.Infrastructure.ValidationException ex)
-			{
-				ModelState.AddModelError(ex.Message, ex.Property);
-			}
-			return View(lot);
-		}
-		*/
-		public ActionResult MakeLot()
-		{
-			IEnumerable<CategoryDTO> categoryDTOs = categoryService.GetCategories();
-			var categoryMapper = new MapperConfiguration(cfg => cfg.CreateMap<CategoryDTO, CategoryModel>()).CreateMapper();
-			var categories = categoryMapper.Map<IEnumerable<CategoryDTO>, List<CategoryModel>>(categoryDTOs);
+        private IEnumerable<CategoryModel> GetCategories()
+        {
+            IEnumerable<CategoryDTO> categoryDTOs = categoryService.GetCategories();
+            var categories = categoryMapper.Map<IEnumerable<CategoryDTO>, IEnumerable<CategoryModel>>(categoryDTOs);
 
-			ViewBag.lotCategory = new SelectList(categories);
-			return View();
-		}
+            return categories;
+        }
 
-		
-		[HttpPost]
-		[ValidateAntiForgeryToken]
-		public ActionResult MakeLot([Bind(Include = "Id,Name,Descriotion,Price,isConfirmed,Category")] LotDTO lotDto)
-		{
-			if (ModelState.IsValid)
-			{
-				lotService.CreateLot(lotDto);
-				return RedirectToAction("Index");
-			}
+        public ActionResult MakeLot()
+        {
+            var model = new CreateLotModel();
+            var categories = GetCategories();
 
-			return View(lotDto);
-		}
-	}
+            model.Categories = GetSelectListItems(categories);
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult MakeLot(CreateLotModel model)
+        {
+            var categories = GetCategories();
+            model.Categories = GetSelectListItems(categories);
+
+            if (ModelState.IsValid)
+            {
+                Session["CreateLotModel"] = model;
+
+                Int32.TryParse(model.SelectedCategoryId, out int selectedId);
+                string currentUserId = HttpContext.User.Identity.GetUserId();
+                string currenUserName = HttpContext.User.Identity.Name;
+
+                LotDTO lotDTO = new LotDTO
+                {
+                    Name = model.Name,
+                    Description = model.Description,
+                    Price = model.Price,
+                    Category = categoryService.GetCategory(selectedId),
+                    UserId = HttpContext.User.Identity.GetUserId()
+                };
+
+                lotService.CreateLot(lotDTO);
+
+                return RedirectToAction("Index");
+            }
+
+            return View("MakeLot", model);
+        }
+    }
 }
