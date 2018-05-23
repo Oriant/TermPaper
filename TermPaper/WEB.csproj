@@ -247,7 +247,7 @@
     <Content Include="Views\Lot\Index.cshtml" />
     <Content Include="Views\Lot\NotFound.cshtml" />
     <Content Include="Views\Lot\Details.cshtml" />
-    <Content Include="Views\Lot\MakeLot.cshtml" />
+    <Content Include="Views\Lot\CreateLot.cshtml" />
     <Content Include="Views\Manager\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>

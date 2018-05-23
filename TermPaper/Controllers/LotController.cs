@@ -19,24 +19,21 @@ namespace TermPaper.Controllers
 		private ILotService lotService;
 		private ICategoryService categoryService;
         private IUserService userService;
-        private IMapper lotMapper, categoryMapper; 
 
         public LotController(ILotService lotService, ICategoryService categoryService, IUserService userService)
 		{
             this.userService = userService;
 			this.lotService = lotService;
 			this.categoryService = categoryService;
-            lotMapper = new MapperConfiguration(cfg => cfg.CreateMap<LotDTO, LotModel>()).CreateMapper();
-            categoryMapper = new MapperConfiguration(cfg => cfg.CreateMap<CategoryDTO, CategoryModel>()).CreateMapper();
         }
 
 		public ActionResult Index(string category, string searchString)
 		{
 			IEnumerable<LotDTO> lotsDTOs = lotService.GetLots();
-            var lots = lotMapper.Map<IEnumerable<LotDTO>, List<LotModel>>(lotsDTOs);
+            var lots = Mapper.Map<IEnumerable<LotDTO>, List<LotModel>>(lotsDTOs);
 
 			IEnumerable<CategoryDTO> categoryDTOs = categoryService.GetCategories();
-			var categories = categoryMapper.Map<IEnumerable<CategoryDTO>, List<CategoryModel>>(categoryDTOs);
+			var categories = Mapper.Map<IEnumerable<CategoryDTO>, List<CategoryModel>>(categoryDTOs);
 
 			ViewBag.category = new SelectList(categories);
 
@@ -57,7 +54,7 @@ namespace TermPaper.Controllers
 		{
 			var lot = lotService.GetLotById(id);
 
-			LotModel lotModel = lotMapper.Map<LotModel>(lot);
+			LotModel lotModel = Mapper.Map<LotModel>(lot);
 
 			if (lot == null)
 				return View("~/Views/Lot/NotFound.cshtml");
@@ -85,12 +82,12 @@ namespace TermPaper.Controllers
         private IEnumerable<CategoryModel> GetCategories()
         {
             IEnumerable<CategoryDTO> categoryDTOs = categoryService.GetCategories();
-            var categories = categoryMapper.Map<IEnumerable<CategoryDTO>, IEnumerable<CategoryModel>>(categoryDTOs);
+            var categories = Mapper.Map<IEnumerable<CategoryDTO>, IEnumerable<CategoryModel>>(categoryDTOs);
 
             return categories;
         }
 
-        public ActionResult MakeLot()
+        public ActionResult CreateLot()
         {
             var model = new CreateLotModel();
             var categories = GetCategories();
@@ -102,7 +99,7 @@ namespace TermPaper.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult MakeLot(CreateLotModel model)
+        public ActionResult CreateLot(CreateLotModel model)
         {
             var categories = GetCategories();
             model.Categories = GetSelectListItems(categories);
@@ -112,8 +109,6 @@ namespace TermPaper.Controllers
                 Session["CreateLotModel"] = model;
 
                 Int32.TryParse(model.SelectedCategoryId, out int selectedId);
-                string currentUserId = HttpContext.User.Identity.GetUserId();
-                string currenUserName = HttpContext.User.Identity.Name;
 
                 LotDTO lotDTO = new LotDTO
                 {
@@ -129,7 +124,7 @@ namespace TermPaper.Controllers
                 return RedirectToAction("Index");
             }
 
-            return View("MakeLot", model);
+            return View("CreateLot", model);
         }
     }
 }

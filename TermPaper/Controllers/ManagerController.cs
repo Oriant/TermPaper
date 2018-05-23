@@ -14,19 +14,13 @@ namespace TermPaper.Controllers
     public class ManagerController : Controller
     {
         private IManagerService service;
-        private IMapper lotMapper; 
 
-
-        public ManagerController(IManagerService service)
-        {
-            this.service = service;
-            lotMapper = new MapperConfiguration(cfg => cfg.CreateMap<LotDTO, LotModel>()).CreateMapper();
-        }
+        public ManagerController(IManagerService service) => this.service = service;
 
         public ActionResult Index()
         {
             IEnumerable<LotDTO> lotsDTOs = service.GetUnconfirmedLots();
-            var lots = lotMapper.Map<IEnumerable<LotDTO>, List<LotModel>>(lotsDTOs);
+            var lots = Mapper.Map<IEnumerable<LotDTO>, List<LotModel>>(lotsDTOs);
 
             return View(lots);
         }
@@ -34,12 +28,14 @@ namespace TermPaper.Controllers
         public ActionResult Confirm(int id)
         {
             service.ConfirmLot(id);
+
             return RedirectToAction("Index");
         }
 
         public ActionResult Decline(int id)
         {
             service.DeclineLot(id);
+
             return RedirectToAction("Index");
         }
     }

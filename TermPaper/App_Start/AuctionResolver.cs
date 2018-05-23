@@ -16,11 +16,13 @@ namespace TermPaper.App_Start
         public static void Configure()
         {
             MapperConfig.Initialize();
+
             NinjectModule serviceMoudle = new ServiceModule();
             NinjectModule bindingModule = new BindingModule("DefaultConnection");
 
             var kernel = new StandardKernel(serviceMoudle, bindingModule);
             kernel.Unbind<ModelValidatorProvider>();
+
             DependencyResolver.SetResolver(new NinjectDependencyResolver(kernel));
         }
     }

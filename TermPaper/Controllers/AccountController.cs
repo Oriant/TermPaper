@@ -62,6 +62,7 @@ namespace TermPaper.Controllers
         public ActionResult Logout()
         {
             AuthenticationManager.SignOut();
+
             return RedirectToAction("Index", "Home");
         }
 

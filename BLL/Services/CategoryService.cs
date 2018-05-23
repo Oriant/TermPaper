@@ -36,11 +36,12 @@ namespace BLL.Services
 
 		public IEnumerable<CategoryDTO> GetCategories()
 		{
-			var mapper = new MapperConfiguration(cfg =>
-			cfg.CreateMap<Category, CategoryDTO>()).CreateMapper();
+            //var mapper = new MapperConfiguration(cfg =>
+            //cfg.CreateMap<Category, CategoryDTO>()).CreateMapper();
 
-			return mapper.Map<IEnumerable<Category>, List<CategoryDTO>>(Database.Categories.GetAll());
-		}
+            //return mapper.Map<IEnumerable<Category>, List<CategoryDTO>>(Database.Categories.GetAll());
+            return Mapper.Map<IEnumerable<Category>, List<CategoryDTO>>(Database.Categories.GetAll());
+        }
 
 		public void Dispose()
 		{
