@@ -198,7 +198,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\CategoryModel.cs" />
-    <Compile Include="Models\CreateLotModel.cs" />
+    <Compile Include="Models\EditCreateModel.cs" />
     <Compile Include="Models\LoginModel.cs" />
     <Compile Include="Models\LotModel.cs" />
     <Compile Include="Models\RegisterModel.cs" />
@@ -249,6 +249,8 @@
     <Content Include="Views\Lot\Details.cshtml" />
     <Content Include="Views\Lot\CreateLot.cshtml" />
     <Content Include="Views\Manager\Index.cshtml" />
+    <Content Include="Views\Lot\UserLotsListing.cshtml" />
+    <Content Include="Views\Lot\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

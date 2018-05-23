@@ -12,6 +12,7 @@ namespace BLL.Interfaces
 		void CreateLot(LotDTO lotDTO);
 		LotDTO GetLotById(int id);
 		IEnumerable<LotDTO> GetLots();
+        void Edit(LotDTO lotDTO);
 		void Dispose();
 	}
 }

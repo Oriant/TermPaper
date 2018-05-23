@@ -31,10 +31,28 @@
                     }
                     else
                     {
-                        <li>
-                            <a>Hello, @User.Identity.Name</a>
-                        </li>
-                        <li>@Html.ActionLink("Sign out", "Logout", "Account")</li>
+                        if(this.User.IsInRole("admin") || this.User.IsInRole("manager"))
+                        {
+                            <li>
+                                <a>Hello, @User.Identity.Name</a>
+                            </li>
+                            <li>@Html.ActionLink("Sign out", "Logout", "Account")</li>
+                        }
+                        else
+                        {
+                          <li class="nav-item dropdown">
+                            <a class="navbar-link dropdown-toggle" href="#" id="navBarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Hello, @User.Identity.Name
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item">@Html.ActionLink("My lots", "UserLotsListing", "Lot")</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item">@Html.ActionLink("My biddings", "UserBiddingsListing", "Lot")</a>
+                            </div>
+                          </li>
+                          <li>@Html.ActionLink("Sign out", "Logout", "Account")</li>
+                        }
+  
                     }
 
                 </ul>

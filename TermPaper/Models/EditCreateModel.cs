@@ -7,8 +7,10 @@ using System.Web.Mvc;
 
 namespace TermPaper.Models
 {
-    public class CreateLotModel
+    public class EditCreateModel
     {
+        public int Id { get; set; }
+
         [Required]
         public string Name { get; set; }
 

@@ -49,10 +49,8 @@ namespace BLL.Services
 
 		public IEnumerable<LotDTO> GetLots()
 		{
-			var mapper = new MapperConfiguration(cfg =>
-			cfg.CreateMap<Lot, LotDTO>()).CreateMapper();
 
-            return mapper.Map<IEnumerable<Lot>, List<LotDTO>>(Database.Lots.GetAll());
+            return Mapper.Map<IEnumerable<Lot>, List<LotDTO>>(Database.Lots.GetAll());
 		}
 
         public LotDTO GetLotById(int id)
@@ -63,6 +61,18 @@ namespace BLL.Services
                 return Mapper.Map<Lot, LotDTO>(lot);
             else
                 return null;
+        }
+
+        public void Edit(LotDTO lotDTO)
+        {
+            var lot = Database.Lots.Get(lotDTO.Id);
+
+            lot.Name = lotDTO.Name;
+            lot.Description = lotDTO.Description;
+            lot.Price = lotDTO.Price;
+
+            Database.Lots.Update(lot);
+            Database.Save();
         }
 
         public void Dispose()

@@ -14,54 +14,60 @@ using Microsoft.AspNet.Identity;
 
 namespace TermPaper.Controllers
 {
-	public class LotController : Controller
-	{
-		private ILotService lotService;
-		private ICategoryService categoryService;
+    public class LotController : Controller
+    {
+        private ILotService lotService;
+        private ICategoryService categoryService;
         private IUserService userService;
 
         public LotController(ILotService lotService, ICategoryService categoryService, IUserService userService)
-		{
+        {
             this.userService = userService;
-			this.lotService = lotService;
-			this.categoryService = categoryService;
+            this.lotService = lotService;
+            this.categoryService = categoryService;
         }
 
-		public ActionResult Index(string category, string searchString)
-		{
-			IEnumerable<LotDTO> lotsDTOs = lotService.GetLots();
+        public ActionResult Index(string category, string searchString)
+        {
+            IEnumerable<LotDTO> lotsDTOs = lotService.GetLots();
             var lots = Mapper.Map<IEnumerable<LotDTO>, List<LotModel>>(lotsDTOs);
 
-			IEnumerable<CategoryDTO> categoryDTOs = categoryService.GetCategories();
-			var categories = Mapper.Map<IEnumerable<CategoryDTO>, List<CategoryModel>>(categoryDTOs);
+            IEnumerable<CategoryDTO> categoryDTOs = categoryService.GetCategories();
+            var categories = Mapper.Map<IEnumerable<CategoryDTO>, List<CategoryModel>>(categoryDTOs);
 
-			ViewBag.category = new SelectList(categories);
+            ViewBag.category = new SelectList(categories);
 
-			if (!String.IsNullOrEmpty(searchString))
-			{
-				lots = (lots.Where(s => s.Name.Contains(searchString))).ToList();
-			}
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                lots = (lots.Where(s => s.Name.Contains(searchString))).ToList();
+            }
 
-			if (!string.IsNullOrEmpty(category))
-			{
-				lots = (lots.Where(x => x.Category.Name == category)).ToList();
-			}
+            if (!string.IsNullOrEmpty(category))
+            {
+                lots = (lots.Where(x => x.Category.Name == category)).ToList();
+            }
 
-			return View(lots);
-		}
+            return View(lots);
+        }
 
-		public ActionResult Details(int id)
-		{
-			var lot = lotService.GetLotById(id);
+        public ActionResult Details(int id)
+        {
+            var lot = lotService.GetLotById(id);
 
-			LotModel lotModel = Mapper.Map<LotModel>(lot);
+            LotModel lotModel = Mapper.Map<LotModel>(lot);
 
-			if (lot == null)
-				return View("~/Views/Lot/NotFound.cshtml");
-			else
-				return View(lotModel);
-		}
+            if (lot == null)
+                return View("~/Views/Lot/NotFound.cshtml");
+            else
+                return View(lotModel);
+        }
 
+        public ActionResult UserLotListing()
+        {
+            ViewBag.currentUserId = HttpContext.User.Identity.GetUserId();
+
+            return View();
+        }
 
         private IEnumerable<SelectListItem> GetSelectListItems(IEnumerable<CategoryModel> elements)
         {
@@ -89,7 +95,7 @@ namespace TermPaper.Controllers
 
         public ActionResult CreateLot()
         {
-            var model = new CreateLotModel();
+            var model = new EditCreateModel();
             var categories = GetCategories();
 
             model.Categories = GetSelectListItems(categories);
@@ -99,7 +105,7 @@ namespace TermPaper.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CreateLot(CreateLotModel model)
+        public ActionResult CreateLot(EditCreateModel model)
         {
             var categories = GetCategories();
             model.Categories = GetSelectListItems(categories);
@@ -125,6 +131,50 @@ namespace TermPaper.Controllers
             }
 
             return View("CreateLot", model);
+        }
+
+        public ActionResult UserLotsListing()
+        {
+            IEnumerable<LotDTO> lotsDTOs = lotService.GetLots();
+            var lots = Mapper.Map<IEnumerable<LotDTO>, List<LotModel>>(lotsDTOs);
+
+            ViewBag.CurrentUserId = HttpContext.User.Identity.GetUserId();
+
+            return View(lots);
+        }
+
+        public ActionResult Edit(int id)
+        {
+            var lot = lotService.GetLotById(id);
+
+            var lotModel = Mapper.Map<LotModel>(lot);
+
+            return View(lotModel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(LotModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                Session["LotModel"] = model;
+
+                LotDTO lotDTO = new LotDTO
+                {
+                    Id = model.Id,
+                    Name = model.Name,
+                    Description = model.Description,
+                    Price = model.Price,
+                    UserId = HttpContext.User.Identity.GetUserId(),
+                };
+
+                lotService.Edit(lotDTO);
+
+                return RedirectToAction("UserLotsListing");
+            }
+
+            return View("Edit", model);
         }
     }
 }

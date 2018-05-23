@@ -19,6 +19,8 @@ namespace TermPaper.Models
 
 		public bool IsConfirmed { get; set; }
 
+        public string UserId { get; set; }
+
         [Display(Name = "Category")]
         public CategoryModel Category { get; set; }
 	}

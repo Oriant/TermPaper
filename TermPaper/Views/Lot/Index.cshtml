@@ -30,7 +30,7 @@
                     @Html.DisplayNameFor(model => model.Price)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Category.Name)
+                    @Html.DisplayNameFor(model => model.Category)
                 </th>
 
                 <th></th>
@@ -40,21 +40,21 @@
             {
                 if(item.IsConfirmed)
                 {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Name)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Price)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Category.Name)
-                    </td>
-                    <td>
-                        <input type="button" class="btn btn-info" value="View details" 
-                               onclick="location.href='@Url.Action("Details", "Lot", new { id = item.Id })'" />
-                    </td>
-                </tr>
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Category.Name)
+                </td>
+                <td>
+                    <input type="button" class="btn btn-info" value="View details"
+                           onclick="location.href='@Url.Action("Details", "Lot", new { id = item.Id })'" />
+                </td>
+            </tr>
                 }
             }
 
