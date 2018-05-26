@@ -17,10 +17,10 @@ namespace TermPaper.App_Start
         {
             MapperConfig.Initialize();
 
-            NinjectModule serviceMoudle = new ServiceModule();
+            NinjectModule serviceModule = new ServiceModule();
             NinjectModule bindingModule = new BindingModule("DefaultConnection");
 
-            var kernel = new StandardKernel(serviceMoudle, bindingModule);
+            var kernel = new StandardKernel(serviceModule, bindingModule);
             kernel.Unbind<ModelValidatorProvider>();
 
             DependencyResolver.SetResolver(new NinjectDependencyResolver(kernel));

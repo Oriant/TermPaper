@@ -11,6 +11,7 @@ using TermPaper.Models;
 using BLL.Infrastructure;
 using BLL.Interfaces;
 using Microsoft.AspNet.Identity;
+using TermPaper.Util;
 
 namespace TermPaper.Controllers
 {
@@ -18,22 +19,24 @@ namespace TermPaper.Controllers
     {
         private ILotService lotService;
         private ICategoryService categoryService;
-        private IUserService userService;
+        private readonly IUserService userService;
+        private MappingHelper helper;
 
         public LotController(ILotService lotService, ICategoryService categoryService, IUserService userService)
         {
             this.userService = userService;
             this.lotService = lotService;
             this.categoryService = categoryService;
+            helper = MappingHelper.GetInstance();
         }
 
         public ActionResult Index(string category, string searchString)
         {
             IEnumerable<LotDTO> lotsDTOs = lotService.GetLots();
-            var lots = Mapper.Map<IEnumerable<LotDTO>, List<LotModel>>(lotsDTOs);
+            var lots = helper.Mapper.Map<IEnumerable<LotDTO>, List<LotModel>>(lotsDTOs);
 
             IEnumerable<CategoryDTO> categoryDTOs = categoryService.GetCategories();
-            var categories = Mapper.Map<IEnumerable<CategoryDTO>, List<CategoryModel>>(categoryDTOs);
+            var categories = helper.Mapper.Map<IEnumerable<CategoryDTO>, List<CategoryModel>>(categoryDTOs);
 
             ViewBag.category = new SelectList(categories);
 
@@ -54,7 +57,7 @@ namespace TermPaper.Controllers
         {
             var lot = lotService.GetLotById(id);
 
-            LotModel lotModel = Mapper.Map<LotModel>(lot);
+            LotModel lotModel = helper.Mapper.Map<LotModel>(lot);
 
             if (lot == null)
                 return View("~/Views/Lot/NotFound.cshtml");
@@ -95,7 +98,7 @@ namespace TermPaper.Controllers
 
         public ActionResult CreateLot()
         {
-            var model = new EditCreateModel();
+            var model = new LotModel();
             var categories = GetCategories();
 
             model.Categories = GetSelectListItems(categories);
@@ -105,15 +108,13 @@ namespace TermPaper.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CreateLot(EditCreateModel model)
+        public ActionResult CreateLot(LotModel model)
         {
             var categories = GetCategories();
             model.Categories = GetSelectListItems(categories);
 
             if (ModelState.IsValid)
             {
-                Session["CreateLotModel"] = model;
-
                 Int32.TryParse(model.SelectedCategoryId, out int selectedId);
 
                 LotDTO lotDTO = new LotDTO
@@ -136,7 +137,7 @@ namespace TermPaper.Controllers
         public ActionResult UserLotsListing()
         {
             IEnumerable<LotDTO> lotsDTOs = lotService.GetLots();
-            var lots = Mapper.Map<IEnumerable<LotDTO>, List<LotModel>>(lotsDTOs);
+            var lots = helper.Mapper.Map<IEnumerable<LotDTO>, List<LotModel>>(lotsDTOs);
 
             ViewBag.CurrentUserId = HttpContext.User.Identity.GetUserId();
 
@@ -146,8 +147,11 @@ namespace TermPaper.Controllers
         public ActionResult Edit(int id)
         {
             var lot = lotService.GetLotById(id);
-
-            var lotModel = Mapper.Map<LotModel>(lot);
+     
+            var categories = GetCategories();
+            
+            var lotModel = helper.Mapper.Map<LotModel>(lot);
+            lotModel.Categories = GetSelectListItems(categories);
 
             return View(lotModel);
         }
@@ -156,9 +160,13 @@ namespace TermPaper.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(LotModel model)
         {
+
+            var categories = GetCategories();
+            model.Categories = GetSelectListItems(categories);
+
             if (ModelState.IsValid)
             {
-                Session["LotModel"] = model;
+                Int32.TryParse(model.SelectedCategoryId, out int selectedId);
 
                 LotDTO lotDTO = new LotDTO
                 {
@@ -166,6 +174,7 @@ namespace TermPaper.Controllers
                     Name = model.Name,
                     Description = model.Description,
                     Price = model.Price,
+                    Category = categoryService.GetCategory(selectedId),
                     UserId = HttpContext.User.Identity.GetUserId(),
                 };
 

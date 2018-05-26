@@ -18,7 +18,6 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.HiddenFor(model => model.Id)
                 @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
             </div>
@@ -41,9 +40,19 @@
         </div>
 
         <div class="form-group">
+            @Html.LabelFor(model => model.SelectedCategoryId, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <p>
+                    @Html.DropDownListFor(m => m.SelectedCategoryId, Model.Categories, "Select category", new { @class = "form-control" })
+                </p>
+            </div>
+        </div>
+
+        <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-success" />
+                <input type="submit" value="Save" class="btn btn-default" />
             </div>
         </div>
     </div>
 }
+

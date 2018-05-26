@@ -7,6 +7,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using TermPaper.Models;
+using TermPaper.Util;
 
 namespace TermPaper.Controllers
 {
@@ -20,7 +21,7 @@ namespace TermPaper.Controllers
         public ActionResult Index()
         {
             IEnumerable<LotDTO> lotsDTOs = service.GetUnconfirmedLots();
-            var lots = Mapper.Map<IEnumerable<LotDTO>, List<LotModel>>(lotsDTOs);
+            var lots = MappingHelper.GetInstance().Mapper.Map<IEnumerable<LotDTO>, List<LotModel>>(lotsDTOs);
 
             return View(lots);
         }
