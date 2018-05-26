@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace DAL.EF
 {
-    public class AuctionDbInitializer : DropCreateDatabaseAlways<AuctionContext>
+    public class AuctionDbInitializer : DropCreateDatabaseIfModelChanges<AuctionContext>
     {
         protected override void Seed(AuctionContext db)
         {
@@ -30,7 +30,7 @@ namespace DAL.EF
             roleManager.Create(managerRole);
 
             var admin = new ApplicationUser { Email = "admin@gmail.com", UserName = "admin@gmail.com" };
-            string adminPassword = "Admin_1234";
+            string adminPassword = "Admin1234";
             userManager.Create(admin, adminPassword);
             ApplicationUser appAdmin = userManager.Find(admin.UserName, adminPassword);
             db.ApplicationUsers.Add(
@@ -42,7 +42,7 @@ namespace DAL.EF
                 });
 
             var manager = new ApplicationUser { Email = "manager@gmail.com", UserName = "manager@gmail.com" };
-            string managerPassword = "Manager_1234";
+            string managerPassword = "Manager1234";
             userManager.Create(manager, managerPassword);
             ApplicationUser appManager = userManager.Find(manager.UserName, managerPassword);
             db.ApplicationUsers.Add(
@@ -54,7 +54,7 @@ namespace DAL.EF
                 });
 
             var user = new ApplicationUser { Email = "user@gmail.com", UserName = "user@gmail.com" };
-            string userPassword = "User_1234";
+            string userPassword = "User1234";
             userManager.Create(user, userPassword);
             ApplicationUser appUser = userManager.Find(user.UserName, userPassword);
             db.ApplicationUsers.Add(
@@ -66,7 +66,6 @@ namespace DAL.EF
                 });
 
             userManager.AddToRole(admin.Id, adminRole.Name);
-            userManager.AddToRole(admin.Id, userRole.Name);
 
             userManager.AddToRole(manager.Id, managerRole.Name);
 

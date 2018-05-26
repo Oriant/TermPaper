@@ -36,11 +36,13 @@ namespace BLL.Services
 
         public void DeclineLot(int id)
         {
-            if (Database.Lots.Get(id) == null)
+            Lot lot = Database.Lots.Get(id);
+
+            if (lot == null)
                 throw new ValidationException("Lot not found", "");
             else
             {
-                Database.Lots.Delete(id);
+                Database.Lots.Delete(lot);
                 Database.Save();
             }
         }

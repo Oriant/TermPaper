@@ -10,7 +10,7 @@ namespace BLL.Interfaces
 	
 		public interface ICategoryService
 		{
-			CategoryDTO GetCategory(int? id);
+			CategoryDTO GetCategory(int id);
 			IEnumerable<CategoryDTO> GetCategories();
 			void Dispose();
 		}

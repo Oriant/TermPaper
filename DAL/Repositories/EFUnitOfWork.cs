@@ -12,39 +12,40 @@ namespace DAL.Repositories
 	public class EFUnitOfWork : IUnitOfWork
 	{
 		private AuctionContext db;
-		private UserRepository userRepository;
-		private CategoryRepository categoryRepository;
-		private LotRepository lotRepository;
+		private Repository<User> userRepository;
+		private Repository<Category> categoryRepository;
+		private Repository<Lot> lotRepository;
 		private bool disposed = false;
 
-		public EFUnitOfWork(string connectionString)
-		{
-			db = new AuctionContext(connectionString);
-		}
-		public IRepository<Lot> Lots
+        public EFUnitOfWork(string connectionString) => db = new AuctionContext(connectionString);
+
+
+        public IRepository<Lot> Lots
 		{
 			get
 			{
 				if (lotRepository == null)
-					lotRepository = new LotRepository(db);
+					lotRepository = new Repository<Lot>(db);
 				return (lotRepository);
 			}
 		}
+
 		public IRepository<Category> Categories
 		{
 			get
 			{
 				if (categoryRepository == null)
-					categoryRepository = new CategoryRepository(db);
+					categoryRepository = new Repository<Category>(db);
 				return (categoryRepository);
 			}
 		}
-		public IUserRepository Users
+
+		public IRepository<User> Users
         {
             get
             {
                 if (userRepository == null)
-                    userRepository = new UserRepository(db);
+                    userRepository = new Repository<User>(db);
 
                 return userRepository;
             }

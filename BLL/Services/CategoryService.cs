@@ -21,12 +21,9 @@ namespace BLL.Services
 			Database = unitOfWork;
 		}
 
-		public CategoryDTO GetCategory(int? id)
+		public CategoryDTO GetCategory(int id)
 		{
-			if (id == null)
-				throw new ValidationException("Category ID undefined");
-
-			var category = Database.Categories.Get(id.Value);
+			var category = Database.Categories.Get(id);
 
 			if (category == null)
 				throw new ValidationException("Category not found");

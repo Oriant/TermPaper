@@ -9,10 +9,11 @@ namespace DAL.Interfaces
     public interface IRepository<Entity> where Entity : class
     {
         IEnumerable<Entity> GetAll();
-        Entity Get(int id);
+        Entity Get(string id);  //for getting users
+        Entity Get(int id);  //for getting other DB entries
         void Create(Entity item);
         void Update(Entity item);
-        void Delete(int id);
+        void Delete(Entity item);
         IEnumerable<Entity> Find(Func<Entity, bool> predicate);
     }
 }
