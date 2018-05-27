@@ -5,7 +5,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Your lots</h2>
+<h2>Pending lots</h2>
 
 <table class="table">
     <tr>
@@ -25,6 +25,53 @@
     @foreach (var item in Model)
     {
         if (!item.IsConfirmed && item.UserId == ViewBag.CurrentUserId)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Category.Name)
+                </td>
+                <td>
+                    <input type="button" class="btn btn-info" value="View details"
+                           onclick="location.href='@Url.Action("Details", "Lot", new { id = item.Id })'" />
+                </td>
+                <td>
+                    <input type="button" class="btn btn-info" value="Edit"
+                           onclick="location.href='@Url.Action("Edit", "Lot", new { id = item.Id })'" />
+                </td>
+            </tr>
+        }
+    }
+
+</table>
+
+
+<h2>Active lots</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Price)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Category)
+        </th>
+
+        <th></th>
+    </tr>
+
+
+    @foreach (var item in Model)
+    {
+        if (item.IsConfirmed && item.UserId == ViewBag.CurrentUserId)
         {
             <tr>
                 <td>
