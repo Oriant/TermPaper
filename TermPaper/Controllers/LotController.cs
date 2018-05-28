@@ -22,23 +22,6 @@ namespace TermPaper.Controllers
         private IUserService userService;
         private MappingHelper helper;
 
-        private string CurrentUserId
-        {
-            get
-            {
-                return HttpContext.User.Identity.GetUserId();
-            }
-        }
-        private IEnumerable<LotModel> CurrentUserLots
-        {
-            get
-            {
-                return helper.Mapper
-                    .Map<IEnumerable<LotDTO>, IEnumerable<LotModel>>(lotService.GetLots())
-                    .Where(x => x.UserId == CurrentUserId);
-            }
-        }
-
 
         private IEnumerable<SelectListItem> GetSelectListItems(IEnumerable<CategoryModel> elements)
         {
@@ -107,7 +90,7 @@ namespace TermPaper.Controllers
         {
             var lot = lotService.GetLotById(id);
 
-            ViewBag.CurrentUserId = CurrentUserId;
+            ViewBag.CurrentUserId = CurrentUserUtil.CurrentUserId;
 
             if (lot.Biddings.Count > 0)
                 ViewBag.LastBidderName = userService.GetUserById(lot.Biddings.Last().UserId).Name;
@@ -150,7 +133,8 @@ namespace TermPaper.Controllers
                     CurrentPrice = model.StartPrice,
                     BidRate = model.BidRate,
                     Category = categoryService.GetCategory(selectedId),
-                    UserId = CurrentUserId
+                    UserId = CurrentUserUtil.CurrentUserId,
+                    CreatorId = CurrentUserUtil.CurrentUserId
                 };
 
                 lotService.CreateLot(lotDTO);
@@ -163,7 +147,11 @@ namespace TermPaper.Controllers
 
         public ActionResult UserLotsListing()
         {
-            return View(CurrentUserLots);
+            ViewBag.CurrentUserId = CurrentUserUtil.CurrentUserId;
+
+            var lots = helper.Mapper.Map<IEnumerable<LotDTO>, IEnumerable<LotModel>>(lotService.GetLots());
+
+            return View(lots);
         }
 
         public ActionResult Edit(int id)
@@ -185,6 +173,7 @@ namespace TermPaper.Controllers
 
             var categories = GetCategories();
             model.Categories = GetSelectListItems(categories);
+            model.CreatorId = CurrentUserUtil.CurrentUserId;
 
             if (ModelState.IsValid)
             {
@@ -198,6 +187,7 @@ namespace TermPaper.Controllers
                     StartPrice = model.StartPrice,
                     BidRate = model.BidRate,
                     CurrentPrice = model.StartPrice,
+                    CreatorId = model.CreatorId,
                     Category = categoryService.GetCategory(selectedId),
                     UserId = HttpContext.User.Identity.GetUserId(),
                 };

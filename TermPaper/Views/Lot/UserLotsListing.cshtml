@@ -24,43 +24,50 @@
     </tr>
 
 
-    @foreach (var item in Model)
+    @foreach (var item in Model.Where(x => x.CreatorId == ViewBag.CurrentUserId))
     {
         if (!item.IsFinished)
         {
-        <tr>
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CurrentPrice)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Category.Name)
+        </td>
+        @if (item.IsConfirmed)
+        {
             <td>
-                @Html.DisplayFor(modelItem => item.Name)
+                <span class="label label-success">Active</span>
             </td>
+        }
+        else
+        {
             <td>
-                @Html.DisplayFor(modelItem => item.CurrentPrice)
+                <span class="label label-warning">Waiting for confrim</span>
             </td>
+        }
+        <td>
+            <input type="button" class="btn btn-info" value="View details"
+                   onclick="location.href='@Url.Action("Details", "Lot", new { id = item.Id })'" />
+        </td>
+        @if (!item.IsConfirmed)
+        {
             <td>
-                @Html.DisplayFor(modelItem => item.Category.Name)
+                <input type="button" class="btn btn-info" value="Edit"
+                       onclick="location.href='@Url.Action("Edit", "Lot", new { id = item.Id })'" />
             </td>
-            @if (item.IsConfirmed)
-            {
-                <td>
-                    <span class="label label-success">Active</span>
-                </td>
-            }
-            else
-            {
-                <td>
-                    <span class="label label-warning">Waiting for confrim</span>
-                </td>
-            }
-            <td>
-                <input type="button" class="btn btn-info" value="View details"
-                       onclick="location.href='@Url.Action("Details", "Lot", new { id = item.Id })'" />
-            </td>
-        </tr>
+        }
+    </tr>
         }
     }
 
 </table>
 
-<h2>Purchased lots</h2>
+<h2>Finished lots</h2>
 
 <table class="table">
     <tr>
@@ -80,40 +87,46 @@
     </tr>
 
 
-    @foreach (var item in Model)
+    @foreach (var item in Model.Where(x => x.CreatorId == ViewBag.CurrentUserId))
     {
         if (item.IsConfirmed && item.IsFinished)
         {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.CurrentPrice)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Category.Name)
-        </td>
-        @if (item.Biddings.Count > 0)
-        {
-            if (item.Biddings.Last().UserId == ViewBag.CurrentUserId)
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CurrentPrice)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Category.Name)
+            </td>
+            @if (item.Biddings.Count > 0)
+            {
+                if (item.Biddings.First().UserId == ViewBag.CurrentUserId)
+                {
+                    <td>
+                        <span class="label label-info">Purchased</span>
+                    </td>
+                }
+                else if(item.CreatorId == ViewBag.CurrentUserId)
+                {
+                    <td>
+                        <span class="label label-success">Sold</span>
+                    </td>
+                }
+            }
+            @if (item.Biddings.Count == 0)
             {
                 <td>
-                    <span class="label label-info">Purchased</span>
+                    <span class="label label-default">Ignored</span>
                 </td>
             }
-        }
-        else
-        {
             <td>
-                <span class="label label-default">Ignored</span>
+                <input type="button" class="btn btn-info" value="View details"
+                       onclick="location.href='@Url.Action("Details", "Lot", new { id = item.Id })'" />
             </td>
-        }
-        <td>
-            <input type="button" class="btn btn-info" value="View details"
-                   onclick="location.href='@Url.Action("Details", "Lot", new { id = item.Id })'" />
-        </td>
-    </tr>
+        </tr>
         }
     }
 

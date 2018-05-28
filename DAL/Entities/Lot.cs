@@ -31,6 +31,8 @@ namespace DAL.Entities
 
         public bool IsConfirmed { get; set; }
 
+        public string CreatorId { get; set; }
+
         
         public int CategoryId { get; set; }
         public virtual Category Category { get; set; }

@@ -17,27 +17,7 @@ namespace TermPaper.Controllers
         private ILotService lotService;
         private IBidService bidService;
         private MappingHelper helper;
-        private CurrentUserModel CurrentUser
-        {
-            get
-            {
-                var id = HttpContext.User.Identity.GetUserId();
 
-                var bidDTOs = bidService.GetBids();
-                var bidModels = helper.Mapper
-                    .Map<IEnumerable<BiddingDTO>, ICollection<BiddingModel>>(bidDTOs)
-                    .Where(x => x.UserId == HttpContext.User.Identity.GetUserId())
-                    .ToList();
-
-                var userModel = new CurrentUserModel
-                {
-                    Id = id,
-                    Biddings = bidModels
-                };
-
-                return userModel;
-            }
-        }
 
         public BiddingController(IUserService userService, ILotService lotService, IBidService bidService)
         {
@@ -49,7 +29,7 @@ namespace TermPaper.Controllers
 
         public ActionResult Index()
         {
-            var bids = CurrentUser.Biddings;
+            var bids = CurrentUserUtil.CurrentUserBids(bidService);
 
             return View(bids);
         }
@@ -59,7 +39,7 @@ namespace TermPaper.Controllers
             var bid = new BiddingDTO
             {
                 Sum = lotService.GetLotById(id).BidRate,
-                UserId = CurrentUser.Id,
+                UserId = CurrentUserUtil.CurrentUserId,
                 LotId = id,
                 Date = DateTime.Now
             };
