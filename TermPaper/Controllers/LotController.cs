@@ -21,26 +21,6 @@ namespace TermPaper.Controllers
         private ICategoryService categoryService;
         private IUserService userService;
         private MappingHelper helper;
-        private CurrentUserModel CurrentUser
-        {
-            get
-            {
-                var id = HttpContext.User.Identity.GetUserId();
-
-                var lotDTOs = lotService.GetLots();
-                var lotModels = helper.Mapper
-                    .Map<IEnumerable<LotDTO>, ICollection<LotModel>>(lotDTOs)
-                    .Where(x => x.UserId == HttpContext.User.Identity.GetUserId()).ToList();
-
-                var userModel = new CurrentUserModel
-                {
-                    Id = id,
-                    Lots = lotModels
-                };
-
-                return userModel;
-            }
-        }
 
 
         private IEnumerable<SelectListItem> GetSelectListItems(IEnumerable<CategoryModel> elements)
@@ -110,9 +90,7 @@ namespace TermPaper.Controllers
         {
             var lot = lotService.GetLotById(id);
 
-            var userId = CurrentUser.Id;
-
-            ViewBag.CurrentUserId = userId;
+            ViewBag.CurrentUserId = CurrentUserUtil.CurrentUserId;
 
             if (lot.Biddings.Count > 0)
                 ViewBag.LastBidderName = userService.GetUserById(lot.Biddings.Last().UserId).Name;
@@ -155,7 +133,8 @@ namespace TermPaper.Controllers
                     CurrentPrice = model.StartPrice,
                     BidRate = model.BidRate,
                     Category = categoryService.GetCategory(selectedId),
-                    UserId = CurrentUser.Id,
+                    UserId = CurrentUserUtil.CurrentUserId,
+                    CreatorId = CurrentUserUtil.CurrentUserId
                 };
 
                 lotService.CreateLot(lotDTO);
@@ -168,9 +147,9 @@ namespace TermPaper.Controllers
 
         public ActionResult UserLotsListing()
         {
-            var lots = CurrentUser.Lots;
+            ViewBag.CurrentUserId = CurrentUserUtil.CurrentUserId;
 
-            ViewBag.CurrentUserId = CurrentUser.Id;
+            var lots = helper.Mapper.Map<IEnumerable<LotDTO>, IEnumerable<LotModel>>(lotService.GetLots());
 
             return View(lots);
         }
@@ -194,6 +173,7 @@ namespace TermPaper.Controllers
 
             var categories = GetCategories();
             model.Categories = GetSelectListItems(categories);
+            model.CreatorId = CurrentUserUtil.CurrentUserId;
 
             if (ModelState.IsValid)
             {
@@ -207,6 +187,7 @@ namespace TermPaper.Controllers
                     StartPrice = model.StartPrice,
                     BidRate = model.BidRate,
                     CurrentPrice = model.StartPrice,
+                    CreatorId = model.CreatorId,
                     Category = categoryService.GetCategory(selectedId),
                     UserId = HttpContext.User.Identity.GetUserId(),
                 };

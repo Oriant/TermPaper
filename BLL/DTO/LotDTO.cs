@@ -29,6 +29,8 @@ namespace BLL.DTO
 
         public bool IsConfirmed { get; set; }
 
+        public string CreatorId { get; set; }
+
 
         public ICollection<BiddingDTO> Biddings { get; set; }
 

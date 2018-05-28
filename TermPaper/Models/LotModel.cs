@@ -33,6 +33,8 @@ namespace TermPaper.Models
 
         public bool IsFinished { get; set; }
 
+        public string CreatorId { get; set; }
+
         [Display(Name = "Date of start")]
         public DateTime StartDate { get; set; }
 

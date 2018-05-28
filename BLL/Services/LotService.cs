@@ -37,6 +37,7 @@ namespace BLL.Services
                 BidRate = lotDTO.BidRate,
                 Category = Database.Categories.Get(lotDTO.Category.Id),
                 User = Database.Users.Get(lotDTO.UserId),
+                CreatorId = lotDTO.CreatorId
 			};
 
 			Database.Lots.Create(lot);
@@ -73,7 +74,8 @@ namespace BLL.Services
             lot.StartPrice = lotDTO.StartPrice;
             lot.CurrentPrice = lotDTO.CurrentPrice;
             lot.Category = category;
-            lot.CategoryId = category.Id;
+            //lot.CategoryId = category.Id;
+            lot.CreatorId = lotDTO.CreatorId;
             lot.IsConfirmed = lotDTO.IsConfirmed;
             lot.IsFinished = lotDTO.IsFinished;
 
