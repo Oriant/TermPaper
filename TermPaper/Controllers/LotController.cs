@@ -21,24 +21,21 @@ namespace TermPaper.Controllers
         private ICategoryService categoryService;
         private IUserService userService;
         private MappingHelper helper;
-        private CurrentUserModel CurrentUser
+
+        private string CurrentUserId
         {
             get
             {
-                var id = HttpContext.User.Identity.GetUserId();
-
-                var lotDTOs = lotService.GetLots();
-                var lotModels = helper.Mapper
-                    .Map<IEnumerable<LotDTO>, ICollection<LotModel>>(lotDTOs)
-                    .Where(x => x.UserId == HttpContext.User.Identity.GetUserId()).ToList();
-
-                var userModel = new CurrentUserModel
-                {
-                    Id = id,
-                    Lots = lotModels
-                };
-
-                return userModel;
+                return HttpContext.User.Identity.GetUserId();
+            }
+        }
+        private IEnumerable<LotModel> CurrentUserLots
+        {
+            get
+            {
+                return helper.Mapper
+                    .Map<IEnumerable<LotDTO>, IEnumerable<LotModel>>(lotService.GetLots())
+                    .Where(x => x.UserId == CurrentUserId);
             }
         }
 
@@ -110,9 +107,7 @@ namespace TermPaper.Controllers
         {
             var lot = lotService.GetLotById(id);
 
-            var userId = CurrentUser.Id;
-
-            ViewBag.CurrentUserId = userId;
+            ViewBag.CurrentUserId = CurrentUserId;
 
             if (lot.Biddings.Count > 0)
                 ViewBag.LastBidderName = userService.GetUserById(lot.Biddings.Last().UserId).Name;
@@ -155,7 +150,7 @@ namespace TermPaper.Controllers
                     CurrentPrice = model.StartPrice,
                     BidRate = model.BidRate,
                     Category = categoryService.GetCategory(selectedId),
-                    UserId = CurrentUser.Id,
+                    UserId = CurrentUserId
                 };
 
                 lotService.CreateLot(lotDTO);
@@ -168,11 +163,7 @@ namespace TermPaper.Controllers
 
         public ActionResult UserLotsListing()
         {
-            var lots = CurrentUser.Lots;
-
-            ViewBag.CurrentUserId = CurrentUser.Id;
-
-            return View(lots);
+            return View(CurrentUserLots);
         }
 
         public ActionResult Edit(int id)
