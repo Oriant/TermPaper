@@ -38,6 +38,6 @@ namespace DAL.Entities
         public string UserId { get; set; }
         public virtual User User { get; set; }
 
-        public virtual ICollection<Bidding> Biddings { get; set; }
+        public virtual ICollection<Bid> Biddings { get; set; }
     }
 }

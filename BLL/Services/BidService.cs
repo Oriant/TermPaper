@@ -22,7 +22,7 @@ namespace BLL.Services
 
         public IEnumerable<BiddingDTO> GetBids()
         {
-            return Mapper.Map<IEnumerable<Bidding>, List<BiddingDTO>>(Database.Biddings.GetAll());
+            return Mapper.Map<IEnumerable<Bid>, List<BiddingDTO>>(Database.Biddings.GetAll());
         }
 
         public void MakeBid(BiddingDTO biddingDTO)
@@ -30,7 +30,7 @@ namespace BLL.Services
             var user = Database.Users.Get(biddingDTO.UserId);
             var lot = Database.Lots.Get(biddingDTO.LotId);
 
-            var bid = new Bidding
+            var bid = new Bid
             {
                 User = user,
                 Lot = lot,

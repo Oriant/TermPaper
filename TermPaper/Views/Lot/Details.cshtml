@@ -18,7 +18,7 @@
 
     @if (Model.Biddings.Count > 0)
     {
-        <b>Last bid:@Model.Biddings.Last().Sum, by @Model.Biddings.Last() at @Model.Biddings.Last().Date</b><br />
+        <b>Last bid by @ViewBag.LastBidderName at @Model.Biddings.Last().Date</b><br />
     }
 
     @if (this.User.IsInRole("user") && Model.UserId != ViewBag.CurrentUserId && !Model.IsFinished)

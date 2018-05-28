@@ -111,7 +111,11 @@ namespace TermPaper.Controllers
             var lot = lotService.GetLotById(id);
 
             var userId = CurrentUser.Id;
+
             ViewBag.CurrentUserId = userId;
+
+            if (lot.Biddings.Count > 0)
+                ViewBag.LastBidderName = userService.GetUserById(lot.Biddings.Last().UserId).Name;
 
             LotModel lotModel = helper.Mapper.Map<LotModel>(lot);
 
@@ -201,6 +205,7 @@ namespace TermPaper.Controllers
                     Name = model.Name,
                     Description = model.Description,
                     StartPrice = model.StartPrice,
+                    BidRate = model.BidRate,
                     CurrentPrice = model.StartPrice,
                     Category = categoryService.GetCategory(selectedId),
                     UserId = HttpContext.User.Identity.GetUserId(),

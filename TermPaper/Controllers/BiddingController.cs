@@ -61,7 +61,7 @@ namespace TermPaper.Controllers
                 Sum = lotService.GetLotById(id).BidRate,
                 UserId = CurrentUser.Id,
                 LotId = id,
-                Date = DateTime.Now,
+                Date = DateTime.Now
             };
 
             bidService.MakeBid(bid);

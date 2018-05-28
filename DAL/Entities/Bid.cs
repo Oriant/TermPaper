@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DAL.Entities
 {
-    public class Bidding
+    public class Bid
     {
         [Key]
         public int Id { get; set; }
