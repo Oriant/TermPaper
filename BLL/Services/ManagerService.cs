@@ -26,9 +26,11 @@ namespace BLL.Services
             Lot lot = Database.Lots.Get(id);
 
             if (lot == null)
-                throw new ValidationException("Lot not found", "");
+                throw new DataValidationException("Lot not found", "");
 
             lot.IsConfirmed = true;
+            lot.StartDate = DateTime.Now;
+            lot.FinishDate = DateTime.Now.AddMinutes(2);
 
             Database.Lots.Update(lot);
             Database.Save();
@@ -39,7 +41,7 @@ namespace BLL.Services
             Lot lot = Database.Lots.Get(id);
 
             if (lot == null)
-                throw new ValidationException("Lot not found", "");
+                throw new DataValidationException("Lot not found", "");
             else
             {
                 Database.Lots.Delete(lot);

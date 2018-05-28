@@ -16,6 +16,7 @@ namespace TermPaper.Util
 			Bind<ICategoryService>().To<CategoryService>();
 			Bind<ILotService>().To<LotService>();
             Bind<IManagerService>().To<ManagerService>();
+            Bind<IBidService>().To<BidService>();
 		}
     }
 }

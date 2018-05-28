@@ -6,19 +6,32 @@
 }
 
 <h2>Details</h2>
-
+<body>
 <p>
     <b>@Model.Name</b><br />
     <b>Description:</b>@Model.Description<br />
-    <b>Price:</b>@Model.Price<br />
-    @if (this.User.IsInRole("user"))
+    <b>Start price:</b>@Model.StartPrice<br />
+    <b>Current price:</b>@Model.CurrentPrice<br />
+    <b>Start date:</b>@Model.StartDate<br />
+    <b>Finish date:</b>@Model.FinishDate<br />
+    <b>Bid rate:</b>@Model.BidRate<br />
+
+    @if (Model.Biddings.Count > 0)
     {
-        <input type="submit" class="btn btn-success col-sm-1" value="Make a rate" /><br />
-        <input type="submit" class="btn btn-primary col-sm-1" value="Back to list" onclick="location.href='@Url.Action("Index", "Lot")'" />
+        <b>Last bid:@Model.Biddings.Last().Sum, by @Model.Biddings.Last() at @Model.Biddings.Last().Date</b><br />
+    }
+
+    @if (this.User.IsInRole("user") && Model.UserId != ViewBag.CurrentUserId && !Model.IsFinished)
+    {
+        <p>
+            <input type="submit" class="btn btn-success col-sm-1" value="Bid" onclick="location.href='@Url.Action("Bid", "Bidding", new { id = Model.Id })'" />
+        </p>
     }
     @if (this.User.IsInRole("manager"))
     {
-        <input type="submit" class="btn btn-primary col-sm-1" value="Back to list" onclick="location.href='@Url.Action("Index", "Manager")'" />
+        <p>
+            <input type="submit" class="btn btn-primary col-sm-1" value="Back to list" onclick="location.href='@Url.Action("Index", "Manager")'" />
+        </p>
     }
-</p>
+    </body>
 

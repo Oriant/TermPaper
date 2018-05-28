@@ -15,6 +15,7 @@ namespace DAL.Repositories
 		private Repository<User> userRepository;
 		private Repository<Category> categoryRepository;
 		private Repository<Lot> lotRepository;
+        private Repository<Bidding> biddingRepository;
 		private bool disposed = false;
 
         public EFUnitOfWork(string connectionString) => db = new AuctionContext(connectionString);
@@ -48,6 +49,17 @@ namespace DAL.Repositories
                     userRepository = new Repository<User>(db);
 
                 return userRepository;
+            }
+        }
+
+        public IRepository<Bidding> Biddings
+        {
+            get
+            {
+                if (biddingRepository == null)
+                    biddingRepository = new Repository<Bidding>(db);
+
+                return biddingRepository;
             }
         }
 

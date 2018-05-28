@@ -1,0 +1,39 @@
+﻿@model IEnumerable<TermPaper.Models.BiddingModel>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Your bids</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Sum)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Date)
+        </th>
+
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Sum)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Date)
+        </td>
+        <td>
+            <input type="button" class="btn btn-info" value="View details"
+                   onclick="location.href='@Url.Action("Details", "Lot", new { id = item.LotId})'" />
+        </td>
+    </tr>
+    }
+</table>
+
+

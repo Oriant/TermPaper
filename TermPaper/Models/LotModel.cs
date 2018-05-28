@@ -19,13 +19,32 @@ namespace TermPaper.Models
 		public string Description { get; set; }
 
         [Required]
-		public decimal Price { get; set; }
+        [Display(Name = "Start price")]
+		public decimal StartPrice { get; set; }
+
+        [Display(Name = "Current price")]
+        public decimal CurrentPrice { get; set; }
+
+        [Required]
+        [Display(Name = "Bid Rate")]
+        public decimal BidRate { get; set; }
 
 		public bool IsConfirmed { get; set; }
+
+        public bool IsFinished { get; set; }
+
+        [Display(Name = "Date of start")]
+        public DateTime StartDate { get; set; }
+
+        [Display(Name = "Date of finish")]
+        public DateTime FinishDate { get; set; }
 
         public string UserId { get; set; }
 
         public CategoryModel Category { get; set; }
+
+        public ICollection<BiddingModel> Biddings { get; set; }
+
 
 
         [Display(Name = "Category")]

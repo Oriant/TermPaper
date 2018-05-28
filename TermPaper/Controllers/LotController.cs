@@ -19,58 +19,29 @@ namespace TermPaper.Controllers
     {
         private ILotService lotService;
         private ICategoryService categoryService;
-        private readonly IUserService userService;
+        private IUserService userService;
         private MappingHelper helper;
-
-        public LotController(ILotService lotService, ICategoryService categoryService, IUserService userService)
+        private CurrentUserModel CurrentUser
         {
-            this.userService = userService;
-            this.lotService = lotService;
-            this.categoryService = categoryService;
-            helper = MappingHelper.GetInstance();
-        }
-
-        public ActionResult Index(string category, string searchString)
-        {
-            IEnumerable<LotDTO> lotsDTOs = lotService.GetLots();
-            var lots = helper.Mapper.Map<IEnumerable<LotDTO>, List<LotModel>>(lotsDTOs);
-
-            IEnumerable<CategoryDTO> categoryDTOs = categoryService.GetCategories();
-            var categories = helper.Mapper.Map<IEnumerable<CategoryDTO>, List<CategoryModel>>(categoryDTOs);
-
-            ViewBag.category = new SelectList(categories);
-
-            if (!String.IsNullOrEmpty(searchString))
+            get
             {
-                lots = (lots.Where(s => s.Name.Contains(searchString))).ToList();
+                var id = HttpContext.User.Identity.GetUserId();
+
+                var lotDTOs = lotService.GetLots();
+                var lotModels = helper.Mapper
+                    .Map<IEnumerable<LotDTO>, ICollection<LotModel>>(lotDTOs)
+                    .Where(x => x.UserId == HttpContext.User.Identity.GetUserId()).ToList();
+
+                var userModel = new CurrentUserModel
+                {
+                    Id = id,
+                    Lots = lotModels
+                };
+
+                return userModel;
             }
-
-            if (!string.IsNullOrEmpty(category))
-            {
-                lots = (lots.Where(x => x.Category.Name == category)).ToList();
-            }
-
-            return View(lots);
         }
 
-        public ActionResult Details(int id)
-        {
-            var lot = lotService.GetLotById(id);
-
-            LotModel lotModel = helper.Mapper.Map<LotModel>(lot);
-
-            if (lot == null)
-                return View("~/Views/Lot/NotFound.cshtml");
-            else
-                return View(lotModel);
-        }
-
-        public ActionResult UserLotListing()
-        {
-            ViewBag.currentUserId = HttpContext.User.Identity.GetUserId();
-
-            return View();
-        }
 
         private IEnumerable<SelectListItem> GetSelectListItems(IEnumerable<CategoryModel> elements)
         {
@@ -96,6 +67,60 @@ namespace TermPaper.Controllers
             return categories;
         }
 
+        private void CheckLotsExpiration()
+        {
+            lotService.GetLots()
+                .Where(x => x.FinishDate < DateTime.Now)
+                .ToList()
+                .ForEach(x => lotService.Expire(x.Id));
+        }
+
+        public LotController(ILotService lotService, ICategoryService categoryService, IUserService userService)
+        {
+            this.userService = userService;
+            this.lotService = lotService;
+            this.categoryService = categoryService;
+            helper = MappingHelper.GetInstance();
+            CheckLotsExpiration();
+        }
+
+
+        public ActionResult Index(string category, string searchString)
+        {
+            IEnumerable<LotDTO> lotsDTOs = lotService.GetLots();
+            var lots = helper.Mapper
+                .Map<IEnumerable<LotDTO>, List<LotModel>>(lotsDTOs)
+                .Where(x => x.IsConfirmed && !x.IsFinished);
+
+            IEnumerable<CategoryDTO> categoryDTOs = categoryService.GetCategories();
+            var categories = helper.Mapper.Map<IEnumerable<CategoryDTO>, List<CategoryModel>>(categoryDTOs);
+
+            ViewBag.category = new SelectList(categories);
+
+            if (!String.IsNullOrEmpty(searchString))
+                lots = (lots.Where(s => s.Name.Contains(searchString))).ToList();
+
+            if (!string.IsNullOrEmpty(category))
+                lots = (lots.Where(x => x.Category.Name == category)).ToList();
+
+            return View(lots);
+        }
+
+        public ActionResult Details(int id)
+        {
+            var lot = lotService.GetLotById(id);
+
+            var userId = CurrentUser.Id;
+            ViewBag.CurrentUserId = userId;
+
+            LotModel lotModel = helper.Mapper.Map<LotModel>(lot);
+
+            if (lot == null)
+                return View("~/Views/Lot/NotFound.cshtml");
+            else
+                return View(lotModel);
+        }
+
         public ActionResult CreateLot()
         {
             var model = new LotModel();
@@ -111,6 +136,7 @@ namespace TermPaper.Controllers
         public ActionResult CreateLot(LotModel model)
         {
             var categories = GetCategories();
+
             model.Categories = GetSelectListItems(categories);
 
             if (ModelState.IsValid)
@@ -121,9 +147,11 @@ namespace TermPaper.Controllers
                 {
                     Name = model.Name,
                     Description = model.Description,
-                    Price = model.Price,
+                    StartPrice = model.StartPrice,
+                    CurrentPrice = model.StartPrice,
+                    BidRate = model.BidRate,
                     Category = categoryService.GetCategory(selectedId),
-                    UserId = HttpContext.User.Identity.GetUserId()
+                    UserId = CurrentUser.Id,
                 };
 
                 lotService.CreateLot(lotDTO);
@@ -136,10 +164,9 @@ namespace TermPaper.Controllers
 
         public ActionResult UserLotsListing()
         {
-            IEnumerable<LotDTO> lotsDTOs = lotService.GetLots();
-            var lots = helper.Mapper.Map<IEnumerable<LotDTO>, List<LotModel>>(lotsDTOs);
+            var lots = CurrentUser.Lots;
 
-            ViewBag.CurrentUserId = HttpContext.User.Identity.GetUserId();
+            ViewBag.CurrentUserId = CurrentUser.Id;
 
             return View(lots);
         }
@@ -173,7 +200,8 @@ namespace TermPaper.Controllers
                     Id = model.Id,
                     Name = model.Name,
                     Description = model.Description,
-                    Price = model.Price,
+                    StartPrice = model.StartPrice,
+                    CurrentPrice = model.StartPrice,
                     Category = categoryService.GetCategory(selectedId),
                     UserId = HttpContext.User.Identity.GetUserId(),
                 };

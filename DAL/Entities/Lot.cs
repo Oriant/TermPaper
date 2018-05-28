@@ -17,9 +17,20 @@ namespace DAL.Entities
 
         public string Description { get; set; }
 
-        public decimal Price { get; set; }
+        public decimal StartPrice { get; set; }
+
+        public decimal CurrentPrice { get; set; }
+
+        public decimal BidRate { get; set; }
+
+        public DateTime? StartDate { get; set; }
+
+        public DateTime? FinishDate { get; set; }
+
+        public bool IsFinished { get; set; }
 
         public bool IsConfirmed { get; set; }
+
         
         public int CategoryId { get; set; }
         public virtual Category Category { get; set; }
@@ -27,6 +38,6 @@ namespace DAL.Entities
         public string UserId { get; set; }
         public virtual User User { get; set; }
 
-        
+        public virtual ICollection<Bidding> Biddings { get; set; }
     }
 }

@@ -17,6 +17,9 @@ namespace DAL.Entities
 
         public string Name { get; set; }
 
+        public virtual ICollection<Lot> Lots { get; set; }
+        public virtual ICollection<Bidding> Biddings { get; set; }
+
         public virtual ApplicationUser ApplicationUser { get; set; }
     }
 }

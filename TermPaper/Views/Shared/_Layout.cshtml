@@ -3,11 +3,12 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - My ASP.NET Application</title>
+    <title>@ViewBag.Title - Online Auction</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 </head>
 <body>
+
     <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
@@ -31,7 +32,7 @@
                     }
                     else
                     {
-                        if(this.User.IsInRole("admin") || this.User.IsInRole("manager"))
+                        if (this.User.IsInRole("admin") || this.User.IsInRole("manager"))
                         {
                             <li>
                                 <a>Hello, @User.Identity.Name</a>
@@ -40,34 +41,32 @@
                         }
                         else
                         {
-                          <li class="nav-item dropdown">
-                            <a class="navbar-link dropdown-toggle" href="#" id="navBarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Hello, @User.Identity.Name
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item">@Html.ActionLink("My lots", "UserLotsListing", "Lot")</a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item">@Html.ActionLink("My biddings", "UserBiddingsListing", "Lot")</a>
-                            </div>
-                          </li>
-                          <li>@Html.ActionLink("Sign out", "Logout", "Account")</li>
+                            <li class="dropdown">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">Hello, @User.Identity.Name<span class="caret"></span></a>
+                                <ul class="dropdown-menu">
+                                    <li><a onclick="location.href='@Url.Action("UserLotsListing", "Lot")'">My lots</a></li>
+                                    <li><a onclick="location.href='@Url.Action("Index", "Bidding")'">My bids</a></li>
+                                </ul>
+                            </li>
+                            <li>@Html.ActionLink("Sign out", "Logout", "Account")</li>
                         }
-  
                     }
 
                 </ul>
             </div>
-            </div>
         </div>
-    
+    </div>
 
-    <div class="container body-content">
+
+    <<div class="container body-content">
         @RenderBody()
         <hr />
         <footer>
             <p>&copy; @DateTime.Now.Year - Online Auction</p>
         </footer>
     </div>
+
+
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")

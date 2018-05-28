@@ -15,6 +15,7 @@ namespace DAL.EF
         public DbSet<User> ApplicationUsers { get; set; }
         public DbSet<Category> Categories { get; set; }
 		public DbSet<Lot> Lots { get; set; }
+        public DbSet<Bidding> Biddings { get; set; }
 
         static AuctionContext()
         {

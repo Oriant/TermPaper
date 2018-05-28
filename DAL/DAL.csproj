@@ -55,6 +55,7 @@
   <ItemGroup>
     <Compile Include="EF\AuctionContext.cs" />
     <Compile Include="EF\AuctionDbInitializer.cs" />
+    <Compile Include="Entities\Bidding.cs" />
     <Compile Include="Entities\Category.cs" />
     <Compile Include="Entities\Lot.cs" />
     <Compile Include="Entities\User.cs" />

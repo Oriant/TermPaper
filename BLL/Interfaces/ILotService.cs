@@ -13,6 +13,7 @@ namespace BLL.Interfaces
 		LotDTO GetLotById(int id);
 		IEnumerable<LotDTO> GetLots();
         void Edit(LotDTO lotDTO);
+        void Expire(int id);
 		void Dispose();
 	}
 }

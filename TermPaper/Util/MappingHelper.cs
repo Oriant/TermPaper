@@ -20,6 +20,7 @@ namespace TermPaper.Util
             {
                 cfg.CreateMap<LotDTO, LotModel>();
                 cfg.CreateMap<CategoryDTO, CategoryModel>();
+                cfg.CreateMap<BiddingDTO, BiddingModel>();
             }).CreateMapper();
         }
 

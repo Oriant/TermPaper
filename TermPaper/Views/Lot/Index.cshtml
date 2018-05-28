@@ -27,7 +27,7 @@
                     @Html.DisplayNameFor(model => model.Name)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Price)
+                    @Html.DisplayNameFor(model => model.CurrentPrice)
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.Category)
@@ -38,24 +38,22 @@
 
             @foreach (var item in Model)
             {
-                if(item.IsConfirmed)
-                {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Price)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Category.Name)
-                </td>
-                <td>
-                    <input type="button" class="btn btn-info" value="View details"
-                           onclick="location.href='@Url.Action("Details", "Lot", new { id = item.Id })'" />
-                </td>
-            </tr>
-                }
+
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CurrentPrice)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Category.Name)
+                    </td>
+                    <td>
+                        <input type="button" class="btn btn-info" value="View details"
+                               onclick="location.href='@Url.Action("Details", "Lot", new { id = item.Id })'" />
+                    </td>
+                </tr>    
             }
 
         </table>

@@ -15,9 +15,22 @@ namespace BLL.DTO
 
         public string Description { get; set; }
 
-        public decimal Price { get; set; }
+        public decimal StartPrice { get; set; }
+
+        public decimal CurrentPrice { get; set; }
+
+        public decimal BidRate { get; set; }
+
+        public DateTime? StartDate { get; set; }
+
+        public DateTime? FinishDate { get; set; }
+
+        public bool IsFinished { get; set; }
 
         public bool IsConfirmed { get; set; }
+
+
+        public ICollection<BiddingDTO> Biddings { get; set; }
 
         public CategoryDTO Category { get; set; }
 
