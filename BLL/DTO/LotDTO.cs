@@ -32,7 +32,7 @@ namespace BLL.DTO
         public string CreatorId { get; set; }
 
 
-        public ICollection<BiddingDTO> Biddings { get; set; }
+        public ICollection<BidDTO> Biddings { get; set; }
 
         public CategoryDTO Category { get; set; }
 
