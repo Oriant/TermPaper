@@ -14,7 +14,7 @@ namespace TermPaper.Controllers
     [Authorize(Roles = "manager")]
     public class ManagerController : Controller
     {
-        private IManagerService service;
+        private readonly IManagerService service;
 
         public ManagerController(IManagerService service) => this.service = service;
 

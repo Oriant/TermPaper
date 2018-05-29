@@ -17,7 +17,7 @@ namespace TermPaper.Controllers
 {
     public class AccountController : Controller
     {
-        readonly IUserService userService;
+        private readonly IUserService userService;
 
         private IAuthenticationManager AuthenticationManager
         {

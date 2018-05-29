@@ -12,7 +12,7 @@ namespace DAL.Repositories
 {
     public class Repository<Entity> : IRepository<Entity> where Entity : class
     {
-        private AuctionContext context;
+        private readonly AuctionContext context;
         private readonly DbSet<Entity> dbSet;
 
         public Repository(AuctionContext context)

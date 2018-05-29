@@ -17,10 +17,10 @@ namespace TermPaper.Controllers
 {
     public class LotController : Controller
     {
-        private ILotService lotService;
-        private ICategoryService categoryService;
-        private IUserService userService;
-        private MappingHelper helper;
+        private readonly ILotService lotService;
+        private readonly ICategoryService categoryService;
+        private readonly IUserService userService;
+        private readonly MappingHelper helper;
 
 
         private IEnumerable<SelectListItem> GetSelectListItems(IEnumerable<CategoryModel> elements)
@@ -64,7 +64,6 @@ namespace TermPaper.Controllers
             CheckLotsExpiration();
         }
 
-
         public ActionResult Index(string category, string searchString)
         {
             IEnumerable<LotDTO> lotsDTOs = lotService.GetLots();
@@ -73,7 +72,8 @@ namespace TermPaper.Controllers
                 .Where(x => x.IsConfirmed && !x.IsFinished);
 
             IEnumerable<CategoryDTO> categoryDTOs = categoryService.GetCategories();
-            var categories = helper.Mapper.Map<IEnumerable<CategoryDTO>, List<CategoryModel>>(categoryDTOs);
+            var categories = helper.Mapper
+                .Map<IEnumerable<CategoryDTO>, List<CategoryModel>>(categoryDTOs);
 
             ViewBag.category = new SelectList(categories);
 

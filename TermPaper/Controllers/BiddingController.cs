@@ -13,10 +13,10 @@ namespace TermPaper.Controllers
 {
     public class BiddingController : Controller
     {
-        private IUserService userService;
-        private ILotService lotService;
-        private IBidService bidService;
-        private MappingHelper helper;
+        private readonly IUserService userService;
+        private readonly ILotService lotService;
+        private readonly IBidService bidService;
+        private readonly MappingHelper helper;
 
 
         public BiddingController(IUserService userService, ILotService lotService, IBidService bidService)
