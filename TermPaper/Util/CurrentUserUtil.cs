@@ -6,13 +6,12 @@ using TermPaper.Models;
 using Microsoft.AspNet.Identity;
 using BLL.DTO;
 using BLL.Interfaces;
+using AutoMapper;
 
 namespace TermPaper.Util
 {
     public static class CurrentUserUtil
     {
-        private static MappingHelper helper = MappingHelper.GetInstance();
-
         public static string CurrentUserId
         {
             get
@@ -26,8 +25,7 @@ namespace TermPaper.Util
             var id = CurrentUserId;
 
             var bidDTOs = bidService.GetBids();
-            var bidModels = helper.Mapper
-                .Map<IEnumerable<BiddingDTO>, ICollection<BiddingModel>>(bidDTOs)
+            var bidModels = Mapper.Map<IEnumerable<BidDTO>, ICollection<BiddingModel>>(bidDTOs)
                 .Where(x => x.UserId == CurrentUserId)
                 .ToList();
 

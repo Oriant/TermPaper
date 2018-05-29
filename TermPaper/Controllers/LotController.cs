@@ -20,7 +20,6 @@ namespace TermPaper.Controllers
         private readonly ILotService lotService;
         private readonly ICategoryService categoryService;
         private readonly IUserService userService;
-        private readonly MappingHelper helper;
 
 
         private IEnumerable<SelectListItem> GetSelectListItems(IEnumerable<CategoryModel> elements)
@@ -60,20 +59,17 @@ namespace TermPaper.Controllers
             this.userService = userService;
             this.lotService = lotService;
             this.categoryService = categoryService;
-            helper = MappingHelper.GetInstance();
             CheckLotsExpiration();
         }
 
         public ActionResult Index(string category, string searchString)
         {
             IEnumerable<LotDTO> lotsDTOs = lotService.GetLots();
-            var lots = helper.Mapper
-                .Map<IEnumerable<LotDTO>, List<LotModel>>(lotsDTOs)
+            var lots = Mapper.Map<IEnumerable<LotDTO>, List<LotModel>>(lotsDTOs)
                 .Where(x => x.IsConfirmed && !x.IsFinished);
 
             IEnumerable<CategoryDTO> categoryDTOs = categoryService.GetCategories();
-            var categories = helper.Mapper
-                .Map<IEnumerable<CategoryDTO>, List<CategoryModel>>(categoryDTOs);
+            var categories = Mapper.Map<IEnumerable<CategoryDTO>, List<CategoryModel>>(categoryDTOs);
 
             ViewBag.category = new SelectList(categories);
 
@@ -95,7 +91,7 @@ namespace TermPaper.Controllers
             if (lot.Biddings.Count > 0)
                 ViewBag.LastBidderName = userService.GetUserById(lot.Biddings.Last().UserId).Name;
 
-            LotModel lotModel = helper.Mapper.Map<LotModel>(lot);
+            LotModel lotModel = Mapper.Map<LotModel>(lot);
 
             if (lot == null)
                 return View("~/Views/Lot/NotFound.cshtml");
@@ -149,7 +145,7 @@ namespace TermPaper.Controllers
         {
             ViewBag.CurrentUserId = CurrentUserUtil.CurrentUserId;
 
-            var lots = helper.Mapper.Map<IEnumerable<LotDTO>, IEnumerable<LotModel>>(lotService.GetLots());
+            var lots = Mapper.Map<IEnumerable<LotDTO>, IEnumerable<LotModel>>(lotService.GetLots());
 
             return View(lots);
         }
@@ -160,7 +156,7 @@ namespace TermPaper.Controllers
      
             var categories = GetCategories();
             
-            var lotModel = helper.Mapper.Map<LotModel>(lot);
+            var lotModel = Mapper.Map<LotModel>(lot);
             lotModel.Categories = GetSelectListItems(categories);
 
             return View(lotModel);

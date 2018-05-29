@@ -9,7 +9,7 @@ namespace BLL.Interfaces
 {
     public interface IBidService
     {
-        IEnumerable<BiddingDTO> GetBids();
-        void MakeBid(BiddingDTO biddingDTO);
+        IEnumerable<BidDTO> GetBids();
+        void MakeBid(BidDTO biddingDTO);
     }
 }

@@ -15,8 +15,6 @@ namespace TermPaper.App_Start
     {
         public static void Configure()
         {
-            MapperConfig.Initialize();
-
             NinjectModule serviceModule = new ServiceModule();
             NinjectModule bindingModule = new BindingModule("DefaultConnection");
 

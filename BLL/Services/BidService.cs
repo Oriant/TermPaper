@@ -20,12 +20,12 @@ namespace BLL.Services
             Database = unitOfWork;
         }
 
-        public IEnumerable<BiddingDTO> GetBids()
+        public IEnumerable<BidDTO> GetBids()
         {
-            return Mapper.Map<IEnumerable<Bid>, List<BiddingDTO>>(Database.Biddings.GetAll());
+            return Mapper.Map<IEnumerable<Bid>, List<BidDTO>>(Database.Biddings.GetAll());
         }
 
-        public void MakeBid(BiddingDTO biddingDTO)
+        public void MakeBid(BidDTO biddingDTO)
         {
             var user = Database.Users.Get(biddingDTO.UserId);
             var lot = Database.Lots.Get(biddingDTO.LotId);

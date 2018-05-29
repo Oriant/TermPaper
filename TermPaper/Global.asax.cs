@@ -19,7 +19,9 @@ namespace TermPaper
 			FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
 			RouteConfig.RegisterRoutes(RouteTable.Routes);
 			BundleConfig.RegisterBundles(BundleTable.Bundles);
+
 			AuctionResolver.Configure();
+            MapperConfig.Initialize();
 		}
     }
 }

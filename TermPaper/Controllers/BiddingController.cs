@@ -16,7 +16,6 @@ namespace TermPaper.Controllers
         private readonly IUserService userService;
         private readonly ILotService lotService;
         private readonly IBidService bidService;
-        private readonly MappingHelper helper;
 
 
         public BiddingController(IUserService userService, ILotService lotService, IBidService bidService)
@@ -24,7 +23,6 @@ namespace TermPaper.Controllers
             this.userService = userService;
             this.lotService = lotService;
             this.bidService = bidService;
-            helper = MappingHelper.GetInstance();
         }
 
         public ActionResult Index()
@@ -36,7 +34,7 @@ namespace TermPaper.Controllers
 
         public ActionResult Bid(int id)
         {
-            var bid = new BiddingDTO
+            var bid = new BidDTO
             {
                 Sum = lotService.GetLotById(id).BidRate,
                 UserId = CurrentUserUtil.CurrentUserId,

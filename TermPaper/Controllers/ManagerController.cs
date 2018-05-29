@@ -21,7 +21,7 @@ namespace TermPaper.Controllers
         public ActionResult Index()
         {
             IEnumerable<LotDTO> lotsDTOs = service.GetUnconfirmedLots();
-            var lots = MappingHelper.GetInstance().Mapper.Map<IEnumerable<LotDTO>, List<LotModel>>(lotsDTOs);
+            var lots = Mapper.Map<IEnumerable<LotDTO>, List<LotModel>>(lotsDTOs);
 
             return View(lots);
         }
