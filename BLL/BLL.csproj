@@ -64,10 +64,14 @@
     <Compile Include="DTO\CategoryDTO.cs" />
     <Compile Include="DTO\LotDTO.cs" />
     <Compile Include="DTO\UserDTO.cs" />
+    <Compile Include="Infrastructure\BiddingDtoEqualityComparer.cs" />
     <Compile Include="Infrastructure\BindingModule.cs" />
+    <Compile Include="Infrastructure\CategoryDtoEqualityComparer.cs" />
     <Compile Include="Infrastructure\MapperConfig.cs" />
     <Compile Include="Infrastructure\OperationDetails.cs" />
     <Compile Include="Infrastructure\DataValidationException.cs" />
+    <Compile Include="Infrastructure\LotDtoEqualityComparer.cs" />
+    <Compile Include="Infrastructure\UserDtoEqualityComparer.cs" />
     <Compile Include="Interfaces\IBidService.cs" />
     <Compile Include="Interfaces\ICategorySevice.cs" />
     <Compile Include="Interfaces\ILotService.cs" />

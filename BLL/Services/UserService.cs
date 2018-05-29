@@ -21,13 +21,18 @@ namespace BLL.Services
         IUnitOfWorkIdentity Database { get; set; }
         IUnitOfWork Data { get; set; }
 
-        public UserService(IUnitOfWorkIdentity uowi, IUnitOfWork uow)
-        {
-            Database = uowi;
-            Data = uow;
-        }
+		public UserService(IUnitOfWorkIdentity uowi, IUnitOfWork uow)
+		{
+			Database = uowi;
+			Data = uow;
+		}
 
-        public async Task<OperationDetails> Create(UserDTO userDto)
+		public UserService( IUnitOfWork uow)
+		{
+			Data = uow;
+		}
+
+		public async Task<OperationDetails> Create(UserDTO userDto)
         {
             var user = await Database.UserManager.FindByEmailAsync(userDto.Email);
 

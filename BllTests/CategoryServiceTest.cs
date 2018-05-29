@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using AutoMapper;
+using BLL.DTO;
 using BLL.Infrastructure;
 using BLL.Interfaces;
 using BLL.Services;
@@ -8,7 +10,6 @@ using DAL.Entities;
 using DAL.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using NUnit.Framework;
 
 namespace BllTests
 {
@@ -25,33 +26,58 @@ namespace BllTests
 			}
 			catch { }
 		}
-		
-		/*
+
 		[TestMethod]
-		public void GetCategoriesTest()
+		public void ShouldReturnTrueIfGetCategory()
 		{
 			//Arrange
-			var categoryRepositoryMock = new Mock<IRepository<Category>();
-			categoryRepositoryMock.Setup(a => a.GetAll()).Returns(new List<Category>()
 
-			{
-				new Category {  Name = "Name1" },
-                new Category {  Name = "Name2" }
+			string actual = "a";
 
-			});
+			Mock<IRepository<Category>> repositoryMock = new Mock<IRepository<Category>>();
+			repositoryMock.Setup(a => a.Get(It.IsAny<int>())).Returns(new Category { Name = "a" });
 
-			var uowMock = new Mock<IUnitOfWork>();
-			uowMock.Setup(uow => uow.Categories).Returns(categoryRepositoryMock.Object);
 
-			var service = new CategoryService(uowMock.Object);
+			var unitOfWorkMock = new Mock<IUnitOfWork>();
+			unitOfWorkMock.Setup(uow => uow.Categories).Returns(repositoryMock.Object);
+
 
 			//Act
-			var actual = service.GetCategories();
+			var categoryService = new CategoryService(unitOfWorkMock.Object);
+			var expected = categoryService.GetCategory(It.IsAny<int>()).Name;
+
 
 			//Assert
-			Microsoft.VisualStudio.TestTools.UnitTesting.Assert.List(new List<string>) { "Все", "Gonduras", "Nigeria" }, actual);
+			Assert.AreEqual(expected, actual);
 		}
-		*/
+
+		[TestMethod]
+		public void ShuldReturnTrueIfGetCategoriesWork()
+		{
+			//Arrange
+			Category one = new Category { Name = "a", Id = 1 };
+			CategoryDTO two = new CategoryDTO { Name = "a", Id = 1 };
+
+			Mock<IRepository<Category>> repositoryMock = new Mock<IRepository<Category>>();
+			repositoryMock.Setup(a => a.GetAll()).Returns(new List<Category>() { one });
+
+			var uowMock = new Mock<IUnitOfWork>();
+			uowMock.Setup(uow => uow.Categories).Returns(repositoryMock.Object);
+
+			var categoryService = new CategoryService(uowMock.Object);
+
+			List<CategoryDTO> expected = new List<CategoryDTO>();
+			expected.Add(two);
+
+
+
+			//Act
+			List<CategoryDTO> actual = (List<CategoryDTO>)categoryService.GetCategories();
+
+			//Assert
+			Assert.IsTrue(expected.SequenceEqual(actual, new CategoryDtoEqualityComparer()));
+		}
+		
 	}
 
 }
