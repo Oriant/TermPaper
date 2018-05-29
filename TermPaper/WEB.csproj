@@ -206,7 +206,6 @@
     <Compile Include="Models\LotsListingModel.cs" />
     <Compile Include="Models\RegisterModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Util\CurrentUserUtil.cs" />
     <Compile Include="Util\ServiceModule.cs" />
   </ItemGroup>
   <ItemGroup>

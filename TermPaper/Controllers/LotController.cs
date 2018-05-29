@@ -86,7 +86,7 @@ namespace TermPaper.Controllers
         {
             var lot = lotService.GetLotById(id);
 
-            ViewBag.CurrentUserId = CurrentUserUtil.CurrentUserId;
+            ViewBag.CurrentUserId = HttpContext.User.Identity.GetUserId();
 
             if (lot.Biddings.Count > 0)
                 ViewBag.LastBidderName = userService.GetUserById(lot.Biddings.Last().UserId).Name;
@@ -121,6 +121,8 @@ namespace TermPaper.Controllers
             {
                 Int32.TryParse(model.SelectedCategoryId, out int selectedId);
 
+                var id = HttpContext.User.Identity.GetUserId();
+
                 LotDTO lotDTO = new LotDTO
                 {
                     Name = model.Name,
@@ -129,8 +131,8 @@ namespace TermPaper.Controllers
                     CurrentPrice = model.StartPrice,
                     BidRate = model.BidRate,
                     Category = categoryService.GetCategory(selectedId),
-                    UserId = CurrentUserUtil.CurrentUserId,
-                    CreatorId = CurrentUserUtil.CurrentUserId
+                    UserId = id,
+                    CreatorId = id
                 };
 
                 lotService.CreateLot(lotDTO);
@@ -143,9 +145,11 @@ namespace TermPaper.Controllers
 
         public ActionResult UserLotsListing()
         {
-            ViewBag.CurrentUserId = CurrentUserUtil.CurrentUserId;
+            var id = HttpContext.User.Identity.GetUserId();
+            ViewBag.CurrentUserId = id;
 
-            var lots = Mapper.Map<IEnumerable<LotDTO>, IEnumerable<LotModel>>(lotService.GetLots());
+            var lots = Mapper.Map<IEnumerable<LotDTO>, IEnumerable<LotModel>>(lotService.GetLots())
+                .Where(x => x.UserId == id || x.CreatorId == id);
 
             return View(lots);
         }
@@ -169,7 +173,7 @@ namespace TermPaper.Controllers
 
             var categories = GetCategories();
             model.Categories = GetSelectListItems(categories);
-            model.CreatorId = CurrentUserUtil.CurrentUserId;
+            model.CreatorId = HttpContext.User.Identity.GetUserId();
 
             if (ModelState.IsValid)
             {

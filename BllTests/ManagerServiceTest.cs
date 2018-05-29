@@ -23,7 +23,7 @@ namespace BllTests
 			try
 			{
 				Mapper.Initialize(cfg =>
-				MapperConfig.Initialize()
+				MapperConfig.Configure(cfg)
 				);
 			}
 			catch { }

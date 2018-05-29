@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace BLL.Infrastructure
 {
-	public class BiddingDtoEqualityComparer : IEqualityComparer<BiddingDTO>
+	public class BiddingDtoEqualityComparer : IEqualityComparer<BidDTO>
 	{
-		public bool Equals(BiddingDTO x, BiddingDTO y)
+		public bool Equals(BidDTO x, BidDTO y)
 		{
 			if (object.ReferenceEquals(x, y)) return true;
 
@@ -18,7 +18,7 @@ namespace BLL.Infrastructure
 			return x.Sum == y.Sum && x.Id == y.Id;
 		}
 
-		public int GetHashCode(BiddingDTO obj)
+		public int GetHashCode(BidDTO obj)
 		{
 			if (object.ReferenceEquals(obj, null)) return 0;
 

@@ -22,7 +22,7 @@ namespace BllTests
 			try
 			{
 				Mapper.Initialize(cfg =>
-				MapperConfig.Initialize()
+				MapperConfig.Configure(cfg)
 				);
 			}
 			catch { }
@@ -35,7 +35,7 @@ namespace BllTests
 		{
 			//Arrange
 			Bid one = new Bid { Sum = 10, Id = 1 };
-			BiddingDTO two = new BiddingDTO { Sum = 10, Id = 1 };
+			BidDTO two = new BidDTO { Sum = 10, Id = 1 };
 
 			Mock<IRepository<Bid>> repositoryMock = new Mock<IRepository<Bid>>();
 			repositoryMock.Setup(a => a.GetAll()).Returns(new List<Bid>() { one });
@@ -45,13 +45,13 @@ namespace BllTests
 
 			var bidService = new BidService(uowMock.Object);
 
-			List<BiddingDTO> expected = new List<BiddingDTO>();
+			List<BidDTO> expected = new List<BidDTO>();
 			expected.Add(two);
 
 
 
 			//Act
-			List<BiddingDTO> actual = (List<BiddingDTO>)bidService.GetBids();
+			List<BidDTO> actual = (List<BidDTO>)bidService.GetBids();
 
 			//Assert
 			Assert.IsTrue(expected.SequenceEqual(actual, new BiddingDtoEqualityComparer()));

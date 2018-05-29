@@ -8,6 +8,7 @@ using Microsoft.AspNet.Identity;
 using TermPaper.Models;
 using BLL.DTO;
 using TermPaper.Util;
+using AutoMapper;
 
 namespace TermPaper.Controllers
 {
@@ -27,9 +28,14 @@ namespace TermPaper.Controllers
 
         public ActionResult Index()
         {
-            var bids = CurrentUserUtil.CurrentUserBids(bidService);
+            var id = HttpContext.User.Identity.GetUserId();
 
-            return View(bids);
+            var bidDTOs = bidService.GetBids();
+            var bidModels = Mapper.Map<IEnumerable<BidDTO>, ICollection<BiddingModel>>(bidDTOs)
+                .Where(x => x.UserId == id)
+                .ToList();
+
+            return View(bidModels);
         }
 
         public ActionResult Bid(int id)
@@ -37,7 +43,7 @@ namespace TermPaper.Controllers
             var bid = new BidDTO
             {
                 Sum = lotService.GetLotById(id).BidRate,
-                UserId = CurrentUserUtil.CurrentUserId,
+                UserId = HttpContext.User.Identity.GetUserId(),
                 LotId = id,
                 Date = DateTime.Now
             };
